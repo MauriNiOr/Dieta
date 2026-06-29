@@ -6,49 +6,65 @@
     <title>Mi Registro de Hábitos</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #f0f4f3; color: #2c3e50; padding: 20px; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; }
-        .wrapper { width: 100%; max-width: 500px; display: block; }
+        body { 
+            background: linear-gradient(135deg, #e0f2f1 0%, #f1f8e9 100%); 
+            background-attachment: fixed;
+            color: #2c3e50; 
+            padding: 20px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: flex-start; 
+            min-height: 100vh; 
+        }
+        .wrapper { width: 100%; max-width: 550px; display: block; }
         
-        /* Tarjetas y Contenedores */
-        .card { background: white; padding: 25px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; }
-        h1 { font-size: 24px; text-align: center; color: #16a085; margin-bottom: 5px; }
+        /* Tarjetas */
+        .card { background: rgba(255, 255, 255, 0.95); padding: 25px; border-radius: 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.06); margin-bottom: 20px; backdrop-filter: blur(5px); }
+        h1 { font-size: 26px; text-align: center; color: #117a65; margin-bottom: 5px; }
         p.subtitle { text-align: center; color: #7f8c8d; font-size: 14px; margin-bottom: 20px; }
         h2 { font-size: 18px; color: #34495e; margin-bottom: 15px; border-left: 4px solid #1abc9c; padding-left: 10px; }
         
-        /* Formulario */
-        .form-group { margin-bottom: 18px; }
-        label { display: block; margin-bottom: 6px; font-size: 14px; font-weight: 600; color: #4b6584; }
-        input[type="number"], select { width: 100%; padding: 12px; border: 1px solid #dcdde1; border-radius: 8px; font-size: 16px; background-color: #f9f9f9; transition: all 0.3s; }
-        input[type="number"]:focus, select:focus { border-color: #1abc9c; background-color: #fff; outline: none; }
+        /* Formularios y campos */
+        .form-group { margin-bottom: 15px; }
+        .form-row { display: flex; gap: 10px; margin-bottom: 15px; }
+        .form-row .form-group { flex: 1; margin-bottom: 0; }
+        label { display: block; margin-bottom: 6px; font-size: 13px; font-weight: 600; color: #4b6584; }
+        input[type="number"], input[type="text"], select { width: 100%; padding: 11px; border: 1px solid #dcdde1; border-radius: 8px; font-size: 15px; background-color: #f9f9f9; transition: all 0.3s; }
+        input[type="number"]:focus, input[type="text"]:focus, select:focus { border-color: #1abc9c; background-color: #fff; outline: none; }
         
-        button { width: 100%; padding: 14px; background-color: #1abc9c; border: none; border-radius: 8px; color: white; font-size: 16px; font-weight: bold; cursor: pointer; transition: background 0.3s, transform 0.1s; }
+        /* Botones */
+        button { width: 100%; padding: 13px; background-color: #1abc9c; border: none; border-radius: 8px; color: white; font-size: 16px; font-weight: bold; cursor: pointer; transition: background 0.3s; }
         button:hover { background-color: #16a085; }
-        button:active { transform: scale(0.98); }
         button:disabled { background-color: #bdc3c7; cursor: not-allowed; }
         
-        /* Botón de reinicio */
         .btn-danger { background-color: #e74c3c; margin-top: 15px; padding: 10px; font-size: 14px; }
         .btn-danger:hover { background-color: #c0392b; }
         
+        .btn-mini { padding: 4px 8px; font-size: 12px; font-weight: normal; width: auto; display: inline-block; border-radius: 4px; margin-left: 2px; }
+        .btn-edit { background-color: #3498db; }
+        .btn-edit:hover { background-color: #2980b9; }
+        .btn-del { background-color: #e74c3c; }
+        .btn-del:hover { background-color: #c0392b; }
+        
         /* Stats Dashboard */
-        .stats-grid { display: block; width: 100%; margin-bottom: 5px; }
-        .stat-box { display: inline-block; width: 47%; background: #e8f8f5; padding: 15px; border-radius: 10px; text-align: center; margin-bottom: 15px; }
+        .stats-grid { display: block; width: 100%; }
+        .stat-box { display: inline-block; width: 48%; background: #f4fbf9; padding: 12px; border-radius: 10px; text-align: center; margin-bottom: 12px; border: 1px solid #e0f2f1; }
         .stat-box:nth-child(even) { float: right; }
-        .stat-box .num { display: block; font-size: 20px; font-weight: bold; color: #16a085; }
-        .stat-box .lbl { font-size: 12px; color: #7f8c8d; margin-top: 2px; }
+        .stat-box .num { display: block; font-size: 18px; font-weight: bold; color: #16a085; }
+        .stat-box .lbl { font-size: 11px; color: #7f8c8d; margin-top: 2px; }
         .clearfix { clear: both; }
 
+        /* Colores condicionales */
+        .mal { color: #c0392b !important; background-color: #fadbd8 !important; font-weight: bold; }
+        .bien { color: #27ae60 !important; background-color: #d4efdf !important; font-weight: bold; }
+        
         /* Historial y Tablas */
         .table-wrapper { overflow-x: auto; margin-top: 10px; }
-        table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; }
-        th { background-color: #f4f6f6; padding: 12px 10px; font-weight: 600; color: #7f8c8d; border-bottom: 2px solid #eaeded; }
-        td { padding: 12px 10px; border-bottom: 1px solid #f2f4f4; color: #2c3e50; }
-        tr:hover { background-color: #fbfcfc; }
+        table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; min-width: 400px; }
+        th { background-color: #f4f6f6; padding: 12px 8px; font-weight: 600; color: #7f8c8d; border-bottom: 2px solid #eaeded; }
+        td { padding: 10px 8px; border-bottom: 1px solid #f2f4f4; color: #2c3e50; }
         
-        .badge { padding: 4px 8px; border-radius: 12px; font-size: 11px; font-weight: bold; }
-        .badge.si { background-color: #d4efdf; color: #27ae60; }
-        .badge.no { background-color: #f9e79f; color: #b7950b; }
-        
+        .badge { padding: 3px 6px; border-radius: 8px; font-size: 11px; }
         .mensaje { text-align: center; margin-top: 15px; font-weight: bold; display: none; font-size: 14px; }
         .no-data { text-align: center; color: #bdc3c7; padding: 20px 0; font-style: italic; }
     </style>
@@ -60,29 +76,54 @@
         <h1>Mi Progreso de Verano</h1>
         <p class="subtitle">Control diario de salud y energía</p>
         
+        <h2>Definir Mis Metas Diarias</h2>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="metaCalorias">Máximo Kcal/día</label>
+                <input type="number" id="metaCalorias" value="2000">
+            </div>
+            <div class="form-group">
+                <label for="metaPasos">Mínimo Pasos/día</label>
+                <input type="number" id="metaPasos" value="10000">
+            </div>
+        </div>
+
+        <hr style="border: 0; border-top: 1px solid #eaeded; margin: 20px 0;">
+
+        <h2 id="formTitulo">Registrar Día de Hoy</h2>
         <form id="registroForm">
-            <div class="form-group">
-                <label for="calorias">Calorías Consumidas (kcal)</label>
-                <input type="number" id="calorias" placeholder="Ej: 1950" required min="0">
+            <input type="hidden" id="editIndex" value="-1">
+            <div class="form-row">
+                <div class="form-group" style="flex: 0.8;">
+                    <label for="fecha">Fecha</label>
+                    <input type="text" id="fecha" placeholder="Ej: 29/6" required>
+                </div>
+                <div class="form-group">
+                    <label for="calorias">Calorías (kcal)</label>
+                    <input type="number" id="calorias" placeholder="Ej: 1950" required min="0">
+                </div>
             </div>
-            <div class="form-group">
-                <label for="pasos">Pasos Totales</label>
-                <input type="number" id="pasos" placeholder="Ej: 10500" required min="0">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="pasos">Pasos Totales</label>
+                    <input type="number" id="pasos" placeholder="Ej: 10500" required min="0">
+                </div>
+                <div class="form-group">
+                    <label for="gym">¿Gym?</label>
+                    <select id="gym">
+                        <option value="Sí">Sí 💪</option>
+                        <option value="No">No 🛌</option>
+                    </select>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="gym">¿Entrenamiento en el Gym?</label>
-                <select id="gym">
-                    <option value="Sí">Sí, cumplido 💪</option>
-                    <option value="No">No por hoy 🛌</option>
-                </select>
-            </div>
-            <button type="submit" id="btnEnviar">Guardar Día</button>
+            <button type="submit" id="btnEnviar">Guardar Registro</button>
+            <button type="button" id="btnCancelarEdicion" class="btn-danger" style="display:none; margin-top:10px;">Cancelar Edición</button>
         </form>
-        <div id="mensajeExito" class="mensaje" style="color: #27ae60;">¡Guardado en la nube e historial actualizado!</div>
+        <div id="mensajeExito" class="mensaje" style="color: #27ae60;">¡Cambios guardados con éxito!</div>
     </div>
 
     <div class="card">
-        <h2>Resumen del Verano</h2>
+        <h2>Resumen Acumulado</h2>
         <div class="stats-grid">
             <div class="stat-box">
                 <span class="num" id="statDias">0</span>
@@ -105,7 +146,7 @@
     </div>
 
     <div class="card" style="padding-bottom: 15px;">
-        <h2>Historial de Entradas</h2>
+        <h2>Historial (Rojo = Meta No Cumplida | Verde = Cumplida)</h2>
         <div class="table-wrapper">
             <table>
                 <thead>
@@ -114,12 +155,12 @@
                         <th>Kcal</th>
                         <th>Pasos</th>
                         <th>Gym</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
-                <tbody id="tablaHistorial">
-                    </tbody>
+                <tbody id="tablaHistorial"></tbody>
             </table>
-            <div id="sinDatos" class="no-data">Aún no hay registros de tus hábitos.</div>
+            <div id="sinDatos" class="no-data">Aún no hay registros guardados.</div>
         </div>
         <button id="btnReiniciar" class="btn-danger">Reiniciar Historial de la Web</button>
     </div>
@@ -138,14 +179,28 @@
     // --- ENLACE CON GOOGLE SHEETS ---
     const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzmK5KJ6Z1CSPUpCyjqra_yRqPy-XORad5VVVAoczJnnOo7w0YCRssfzKfMXuT_s7VJyQ/exec";
 
-    // Cargar historial local al abrir la página
+    // Cargar historial y metas locales
     let historial = JSON.parse(localStorage.getItem('historialDieta')) || [];
+    
+    // Auto rellenar fecha de hoy de forma cómoda
+    function ponerFechaDeHoy() {
+        if(document.getElementById('editIndex').value === "-1") {
+            const hoy = new Date();
+            document.getElementById('fecha').value = hoy.getDate() + "/" + (hoy.getMonth() + 1);
+        }
+    }
 
-    // Función para renderizar la tabla e indicadores visuales
+    // Escuchar cambios en las metas para volver a colorear la tabla al instante
+    document.getElementById('metaCalorias').addEventListener('input', actualizarInterfaz);
+    document.getElementById('metaPasos').addEventListener('input', actualizarInterfaz);
+
     function actualizarInterfaz() {
         const tbody = document.getElementById('tablaHistorial');
         const sinDatos = document.getElementById('sinDatos');
         
+        const mKcal = Number(document.getElementById('metaCalorias').value) || 2000;
+        const mPasos = Number(document.getElementById('metaPasos').value) || 10000;
+
         tbody.innerHTML = "";
         
         if (historial.length === 0) {
@@ -162,18 +217,26 @@
         let totalPasos = 0;
         let totalGym = 0;
 
-        historial.slice().reverse().forEach(dia => {
+        historial.forEach((dia, index) => {
             const row = document.createElement('tr');
-            const badgeClass = dia.gym === 'Sí' ? 'badge si' : 'badge no';
-            const gymTexto = dia.gym === 'Sí' ? 'Sí' : 'No';
+            
+            // Lógica de colores condicionales basados en las metas
+            const kcalClase = Number(dia.calorias) <= mKcal ? 'bien' : 'mal'; 
+            const pasosClase = Number(dia.pasos) >= mPasos ? 'bien' : 'mal';
+            const gymClase = dia.gym === 'Sí' ? 'bien' : 'mal';
 
             row.innerHTML = `
                 <td><strong>${dia.fecha}</strong></td>
-                <td>${Number(dia.calorias).toLocaleString()} kcal</td>
-                <td>${Number(dia.pasos).toLocaleString()}</td>
-                <td><span class="${badgeClass}">${gymTexto}</span></td>
+                <td class="${kcalClase}">${Number(dia.calorias).toLocaleString()}</td>
+                <td class="${pasosClase}">${Number(dia.pasos).toLocaleString()}</td>
+                <td class="${gymClase}">${dia.gym}</td>
+                <td>
+                    <button class="btn-mini btn-edit" onclick="editarDia(${index})">✏️</button>
+                    <button class="btn-mini btn-del" onclick="borrarDia(${index})">🗑️</button>
+                </td>
             `;
-            tbody.appendChild(row);
+            // Insertar arriba los más recientes
+            tbody.insertBefore(row, tbody.firstChild);
 
             totalCalorias += Number(dia.calorias);
             totalPasos += Number(dia.pasos);
@@ -187,25 +250,25 @@
         document.getElementById('statGym').innerText = totalGym;
     }
 
+    // Guardar o Actualizar Datos
     document.getElementById('registroForm').addEventListener('submit', function(e) {
         e.preventDefault();
         
         const btn = document.getElementById('btnEnviar');
         const mensaje = document.getElementById('mensajeExito');
+        const editIndex = parseInt(document.getElementById('editIndex').value);
         
         btn.disabled = true;
         btn.innerText = "Guardando...";
 
-        const fechaActual = new Date();
-        const formatoFecha = fechaActual.getDate() + "/" + (fechaActual.getMonth() + 1);
-
         const nuevosDatos = {
-            fecha: formatoFecha,
+            fecha: document.getElementById('fecha').value,
             calorias: document.getElementById('calorias').value,
             pasos: document.getElementById('pasos').value,
             gym: document.getElementById('gym').value
         };
 
+        // Enviar a Google Sheets
         fetch(WEB_APP_URL, {
             method: 'POST',
             mode: 'no-cors',
@@ -213,36 +276,81 @@
             body: JSON.stringify(nuevosDatos)
         })
         .then(() => {
-            historial.push(nuevosDatos);
+            if (editIndex === -1) {
+                // Modo Añadir nuevo día
+                historial.push(nuevosDatos);
+            } else {
+                // Modo Editar día existente
+                historial[editIndex] = nuevosDatos;
+                document.getElementById('editIndex').value = "-1";
+                document.getElementById('formTitulo').innerText = "Registrar Día de Hoy";
+                document.getElementById('btnCancelarEdicion').style.display = "none";
+            }
+
             localStorage.setItem('historialDieta', JSON.stringify(historial));
             actualizarInterfaz();
 
             mensaje.style.display = "block";
             document.getElementById('registroForm').reset();
+            ponerFechaDeHoy();
             btn.disabled = false;
-            btn.innerText = "Guardar Día";
+            btn.innerText = "Guardar Registro";
             
             setTimeout(() => { mensaje.style.display = "none"; }, 4000);
         })
         .catch(error => {
-            alert('Hubo un problema de red al guardar los datos.');
+            alert('Hubo un problema al conectar con Google Sheets.');
             console.error(error);
             btn.disabled = false;
-            btn.innerText = "Guardar Día";
+            btn.innerText = "Guardar Registro";
         });
     });
 
-    // Acción para reiniciar el historial en la web
+    // Función para activar la edición de una fila
+    window.editarDia = function(index) {
+        const dia = historial[index];
+        document.getElementById('editIndex').value = index;
+        document.getElementById('fecha').value = dia.fecha;
+        document.getElementById('calorias').value = dia.calorias;
+        document.getElementById('pasos').value = dia.pasos;
+        document.getElementById('gym').value = dia.gym;
+        
+        document.getElementById('formTitulo').innerText = "Editando el día: " + dia.fecha;
+        document.getElementById('btnCancelarEdicion').style.display = "block";
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    // Cancelar la edición actual
+    document.getElementById('btnCancelarEdicion').addEventListener('click', function() {
+        document.getElementById('editIndex').value = "-1";
+        document.getElementById('formTitulo').innerText = "Registrar Día de Hoy";
+        document.getElementById('registroForm').reset();
+        ponerFechaDeHoy();
+        this.style.display = "none";
+    });
+
+    // Función para borrar un día específico de la pantalla
+    window.borrarDia = function(index) {
+        if(confirm("¿Quieres eliminar este día de tu historial de pantalla?")) {
+            historial.splice(index, 1);
+            localStorage.setItem('historialDieta', JSON.stringify(historial));
+            actualizarInterfaz();
+        }
+    };
+
+    // Reiniciar todo
     document.getElementById('btnReiniciar').addEventListener('click', function() {
-        let confirmar = confirm("¿Seguro que quieres borrar todo el historial visual de esta pantalla? (Nota: Los datos antiguos guardados en tu Google Excel NO se borrarán).");
-        if (confirmar) {
+        if (confirm("¿Borrar por completo el historial de esta pantalla?")) {
             localStorage.removeItem('historialDieta');
             historial = [];
             actualizarInterfaz();
+            ponerFechaDeHoy();
         }
     });
 
+    // Inicialización al cargar la página
     actualizarInterfaz();
+    ponerFechaDeHoy();
 </script>
 
 </body>
