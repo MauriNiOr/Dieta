@@ -26,6 +26,10 @@
         button:active { transform: scale(0.98); }
         button:disabled { background-color: #bdc3c7; cursor: not-allowed; }
         
+        /* Botón de reinicio */
+        .btn-danger { background-color: #e74c3c; margin-top: 15px; padding: 10px; font-size: 14px; }
+        .btn-danger:hover { background-color: #c0392b; }
+        
         /* Stats Dashboard */
         .stats-grid { display: block; width: 100%; margin-bottom: 5px; }
         .stat-box { display: inline-block; width: 47%; background: #e8f8f5; padding: 15px; border-radius: 10px; text-align: center; margin-bottom: 15px; }
@@ -117,6 +121,7 @@
             </table>
             <div id="sinDatos" class="no-data">Aún no hay registros de tus hábitos.</div>
         </div>
+        <button id="btnReiniciar" class="btn-danger">Reiniciar Historial de la Web</button>
     </div>
 </div>
 
@@ -145,6 +150,10 @@
         
         if (historial.length === 0) {
             sinDatos.style.display = "block";
+            document.getElementById('statDias').innerText = 0;
+            document.getElementById('statCalorias').innerText = 0;
+            document.getElementById('statPasos').innerText = 0;
+            document.getElementById('statGym').innerText = 0;
             return;
         }
         sinDatos.style.display = "none";
@@ -221,6 +230,16 @@
             btn.disabled = false;
             btn.innerText = "Guardar Día";
         });
+    });
+
+    // Acción para reiniciar el historial en la web
+    document.getElementById('btnReiniciar').addEventListener('click', function() {
+        let confirmar = confirm("¿Seguro que quieres borrar todo el historial visual de esta pantalla? (Nota: Los datos antiguos guardados en tu Google Excel NO se borrarán).");
+        if (confirmar) {
+            localStorage.removeItem('historialDieta');
+            historial = [];
+            actualizarInterfaz();
+        }
     });
 
     actualizarInterfaz();
