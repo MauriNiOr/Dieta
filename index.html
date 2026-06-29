@@ -3,114 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel Personalizado</title>
+    <title>Panel Personal Premium Sincronizado</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         
-        /* Estilos base del Body - Cambian dinámicamente con JS */
         body { 
-            background: #f0f3f4;
+            background: #1e1e24;
             color: #2c3e50; 
             padding: 20px; 
             display: flex; 
             justify-content: center; 
             align-items: flex-start; 
             min-height: 100vh; 
-            transition: background 0.5s ease;
+            transition: all 0.5s ease;
         }
         
-        /* Temas de fondo según usuario */
-        body.tema-mauri {
-            background: linear-gradient(135deg, #111d1a 0%, #2c3e50 100%);
-            background-attachment: fixed;
-        }
-        body.tema-yuli {
-            background: linear-gradient(135deg, #ffebee 0%, #f3e5f5 100%);
-            background-attachment: fixed;
-        }
+        /* Fondos Temáticos */
+        body.tema-mauri { background: linear-gradient(135deg, #0f1715 0%, #1a252f 100%); background-attachment: fixed; }
+        body.tema-yuli { background: linear-gradient(135deg, #fce4ec 0%, #f3e5f5 100%); background-attachment: fixed; }
 
         .wrapper { width: 100%; max-width: 550px; display: block; }
         
-        /* Tarjetas con efecto cristal */
-        .card { 
-            background: rgba(255, 255, 255, 0.96); 
-            padding: 25px; 
-            border-radius: 20px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08); 
-            margin-bottom: 25px; 
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.5);
-            transition: all 0.3s ease;
+        /* PANTALLA DE LOGIN ESTILO PREMIUM */
+        #pantallaLogin {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, #2c3e50 0%, #0f171c 100%);
+            display: flex; justify-content: center; align-items: center; z-index: 9999; padding: 20px;
         }
-        
-        /* Encabezados personalizados por Estilo */
-        .tema-mauri .card { border-top: 5px solid #1abc9c; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .login-card {
+            background: rgba(255, 255, 255, 0.08); padding: 40px 30px; border-radius: 24px;
+            backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.1);
+            text-align: center; width: 100%; max-width: 400px; box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+        .login-card h2 { color: #fff; margin-bottom: 10px; border: none; padding: 0; font-size: 24px; }
+        .login-card p { color: #a0aec0; font-size: 14px; margin-bottom: 25px; }
+        .login-card input {
+            width: 100%; padding: 14px; border: 1px solid rgba(255,255,255,0.2); border-radius: 12px;
+            background: rgba(255,255,255,0.05); color: #fff; font-size: 16px; text-align: center;
+            margin-bottom: 20px; transition: all 0.3s;
+        }
+        .login-card input:focus { border-color: #1abc9c; outline: none; background: rgba(255,255,255,0.1); }
+        .login-card button {
+            background: linear-gradient(135deg, #1abc9c 0%, #16a085 100%); font-weight: 700; letter-spacing: 0.5px;
+        }
+        .login-card button:hover { transform: translateY(-2px); box-shadow: 0 7px 14px rgba(26,188,156,0.3); }
+
+        /* TARJETAS CONTENEDORAS */
+        .card { 
+            background: rgba(255, 255, 255, 0.97); padding: 25px; border-radius: 20px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-bottom: 25px; 
+            border: 1px solid rgba(255,255,255,0.6); transition: all 0.3s ease;
+        }
+        .tema-mauri .card { border-top: 5px solid #1abc9c; box-shadow: 0 10px 35px rgba(0,0,0,0.2); }
         .tema-yuli .card { border-top: 5px solid #ec407a; }
 
         h1 { font-size: 26px; text-align: center; margin-bottom: 5px; font-weight: 800; }
-        .tema-mauri h1 { color: #1abc9c; text-transform: uppercase; letter-spacing: 1px; }
+        .tema-mauri h1 { color: #1abc9c; text-transform: uppercase; }
         .tema-yuli h1 { color: #d81b60; font-family: 'Georgia', serif; }
-
         p.subtitle { text-align: center; color: #7f8c8d; font-size: 14px; margin-bottom: 25px; }
         
-        h2 { font-size: 18px; color: #34495e; margin-bottom: 15px; padding-left: 10px; font-weight: 700; }
+        h2 { font-size: 17px; color: #34495e; margin-bottom: 15px; padding-left: 10px; font-weight: 700; }
         .tema-mauri h2 { border-left: 4px solid #1abc9c; }
         .tema-yuli h2 { border-left: 4px solid #ec407a; color: #8e24aa; }
         
-        /* Campos de Formulario */
+        /* Campos de entrada */
         .form-group { margin-bottom: 15px; }
         .form-row { display: flex; gap: 12px; margin-bottom: 15px; }
         .form-row .form-group { flex: 1; margin-bottom: 0; }
         label { display: block; margin-bottom: 6px; font-size: 13px; font-weight: 600; color: #4b6584; }
-        input[type="number"], input[type="text"], select { width: 100%; padding: 12px; border: 1px solid #dcdde1; border-radius: 10px; font-size: 15px; background-color: #fdfefe; transition: all 0.3s; }
+        input[type="number"], input[type="text"], select { width: 100%; padding: 12px; border: 1px solid #dcdde1; border-radius: 10px; font-size: 15px; background-color: #fff; }
         
-        .tema-mauri input:focus, .tema-mauri select:focus { border-color: #1abc9c; outline: none; box-shadow: 0 0 8px rgba(26,188,156,0.3); }
-        .tema-yuli input:focus, .tema-yuli select:focus { border-color: #ec407a; outline: none; box-shadow: 0 0 8px rgba(236,64,122,0.3); }
-        
-        /* Botones Potentes */
-        button { width: 100%; padding: 14px; border: none; border-radius: 10px; color: white; font-size: 16px; font-weight: bold; cursor: pointer; transition: all 0.3s ease; }
+        /* Botones generales */
+        button { width: 100%; padding: 14px; border: none; border-radius: 10px; color: white; font-size: 15px; font-weight: bold; cursor: pointer; transition: all 0.2s ease; }
         .tema-mauri button { background: linear-gradient(135deg, #1abc9c 0%, #16a085 100%); }
-        .tema-mauri button:hover { background: linear-gradient(135deg, #16a085 0%, #117a65 100%); }
         .tema-yuli button { background: linear-gradient(135deg, #ec407a 0%, #ab47bc 100%); }
-        .tema-yuli button:hover { background: linear-gradient(135deg, #d81b60 0%, #8e24aa 100%); }
         
-        .btn-danger { background: #e74c3c !important; margin-top: 15px; padding: 10px; font-size: 14px; }
-        .btn-danger:hover { background: #c0392b !important; }
-        .btn-mini { padding: 5px 9px; font-size: 12px; font-weight: normal; width: auto; display: inline-block; border-radius: 6px; margin-left: 2px; }
+        .btn-danger { background: #e74c3c !important; margin-top: 15px; padding: 10px; font-size: 13px; }
+        .btn-mini { padding: 5px 8px; font-size: 12px; font-weight: normal; width: auto; display: inline-block; border-radius: 6px; margin-left: 2px; border: none; color: #fff; }
         .btn-edit { background-color: #3498db; }
         .btn-del { background-color: #e74c3c; }
         
-        /* Finanzas de Yuli Estilo Chic */
-        .finanzas-grid { display: flex; flex-direction: column; gap: 14px; margin-top: 15px; }
-        .finanzas-box { padding: 18px; border-radius: 14px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.02); transition: transform 0.2s; }
-        .finanzas-box:hover { transform: translateX(5px); }
+        /* Finanzas Chic Yuli */
+        .badge-gym { background: #e1f5fe; color: #0288d1; padding: 8px 12px; border-radius: 8px; font-size: 13px; font-weight: bold; margin-bottom: 15px; border-left: 4px solid #0288d1; }
+        .finanzas-grid { display: flex; flex-direction: column; gap: 12px; margin-top: 15px; }
+        .finanzas-box { padding: 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; }
         .finanzas-box.personal { border-left: 5px solid #ab47bc; background: #fbf5fc; }
         .finanzas-box.casa { border-left: 5px solid #26a69a; background: #f2faf9; }
         .finanzas-box.coche { border-left: 5px solid #ff9800; background: #fffbe6; }
-        .finanzas-box span.monto { font-size: 22px; font-weight: bold; color: #2c3e50; }
-        .consejo-box { background: #fffde7; padding: 15px; border-radius: 12px; border: 1px dashed #f1c40f; margin-top: 15px; font-size: 13px; line-height: 1.6; color: #7f6000; }
+        .finanzas-box span.monto { font-size: 20px; font-weight: bold; color: #2c3e50; }
+        .consejo-box { background: #fffde7; padding: 14px; border-radius: 12px; border: 1px dashed #f1c40f; margin-top: 15px; font-size: 13px; line-height: 1.5; color: #7f6000; }
         
         /* Marcadores Fitness Mauri */
         .stats-grid { display: block; width: 100%; }
-        .stat-box { display: inline-block; width: 48%; background: #f2fbf9; padding: 15px; border-radius: 12px; text-align: center; margin-bottom: 12px; border: 1px solid #e0f2f1; }
+        .stat-box { display: inline-block; width: 48%; background: #f2fbf9; padding: 14px; border-radius: 12px; text-align: center; margin-bottom: 12px; border: 1px solid #e0f2f1; }
         .stat-box:nth-child(even) { float: right; }
-        .stat-box .num { display: block; font-size: 22px; font-weight: 800; color: #16a085; }
-        .stat-box .lbl { font-size: 11px; color: #7f8c8d; text-transform: uppercase; font-weight: 600; margin-top: 3px; }
+        .stat-box .num { display: block; font-size: 20px; font-weight: 800; color: #16a085; }
+        .stat-box .lbl { font-size: 11px; color: #7f8c8d; text-transform: uppercase; margin-top: 3px; }
         .clearfix { clear: both; }
 
-        /* Alertas de Meta */
         .mal { color: #c0392b !important; background-color: #fadbd8 !important; font-weight: bold; }
         .bien { color: #27ae60 !important; background-color: #d4efdf !important; font-weight: bold; }
         
-        /* Tablas */
         .table-wrapper { overflow-x: auto; margin-top: 10px; }
-        table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; min-width: 420px; }
+        table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; min-width: 440px; }
         th { background-color: #f8f9f9; padding: 12px 8px; font-weight: 700; color: #7f8c8d; border-bottom: 2px solid #eaeded; }
-        td { padding: 12px 8px; border-bottom: 1px solid #f2f4f4; color: #2c3e50; }
+        td { padding: 12px 8px; border-bottom: 1px solid #f2f4f4; color: #2c3e50; vertical-align: middle; }
         .no-data { text-align: center; color: #bdc3c7; padding: 20px 0; font-style: italic; }
     </style>
 </head>
 <body>
+
+<div id="pantallaLogin">
+    <div class="login-card">
+        <h2>Control de Acceso</h2>
+        <p>Introduce tu clave secreta para continuar</p>
+        <input type="password" id="inputPassword" placeholder="••••••••">
+        <button onclick="intentarAcceso()">Entrar al Panel</button>
+    </div>
+</div>
 
 <div class="wrapper">
 
@@ -162,7 +172,6 @@
                 <button type="submit" id="btnEnviar">Guardar Registro</button>
                 <button type="button" id="btnCancelarEdicion" class="btn-danger" style="display:none; margin-top:10px;">Cancelar Edición</button>
             </form>
-            <div id="mensajeExito" class="mensaje" style="color: #27ae60;">¡Guardado en la base de datos!</div>
         </div>
 
         <div class="card">
@@ -213,277 +222,353 @@
     <div id="vistaYuli" style="display: none;">
         <div class="card">
             <h1>Yuli · Finanzas Inteligentes</h1>
-            <p class="subtitle">Gestión de presupuestos y objetivos con algoritmos de optimización</p>
+            <p class="subtitle">Gestión sincronizada en la nube con descuento de suscripciones</p>
             
-            <h2>Ingresar Fondos</h2>
-            <div class="form-group">
-                <label for="dineroTotal">¿Cuánto dinero tienes disponible hoy?</label>
-                <input type="number" id="dineroTotal" placeholder="Introduce la cantidad (€)" min="0" value="0">
-            </div>
-            <button id="btnCalcularFinanzas">Calcular Mi Distribución</button>
+            <h2 id="formTituloYuli">Ingresar Fondos Mensuales</h2>
+            <form id="formFinanzasYuli">
+                <input type="hidden" id="editIndexYuli" value="-1">
+                <div class="form-row">
+                    <div class="form-group" style="flex: 0.7;">
+                        <label for="mesYuli">Mes de Registro</label>
+                        <input type="text" id="mesYuli" placeholder="Ej: Julio" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="dineroTotal">Monto Ingresado (€)</label>
+                        <input type="number" id="dineroTotal" placeholder="Ej: 1200" min="0" required>
+                    </div>
+                </div>
+                <button type="submit" id="btnCalcularFinanzas">Calcular y Subir a Google Sheets</button>
+                <button type="button" id="btnCancelarEdicionYuli" class="btn-danger" style="display:none; margin-top:10px;">Cancelar Edición</button>
+            </form>
         </div>
 
         <div class="card" id="resultadosFinanzas" style="display: none;">
-            <h2>Tu Distribución Optimizada</h2>
+            <h2>Distribución de Fondos Limpios</h2>
+            <div class="badge-gym">🏃‍♀️ Cuota Gym Separada Automatizadamente: -34.95 € (Ciclo 28 días)</div>
+            
             <div class="finanzas-grid">
                 <div class="finanzas-box casa">
                     <div>
                         <strong>Para Casa (Max 200€)</strong>
-                        <div style="font-size: 11px; color: #7f8c8d; margin-top:2px;">30% asignado (Bloqueado si supera los 200€).</div>
+                        <div style="font-size: 11px; color: #7f8c8d; margin-top:2px;">30% del neto limpio.</div>
                     </div>
                     <span class="monto" id="montoCasa">0.00 €</span>
                 </div>
                 <div class="finanzas-box personal">
                     <div>
-                        <strong>Para Mí (30% + Sobrante)</strong>
-                        <div style="font-size: 11px; color: #7f8c8d; margin-top:2px;">Tu base de siempre más el 75% de lo que exceda de casa.</div>
+                        <strong>Para Mí</strong>
+                        <div style="font-size: 11px; color: #7f8c8d; margin-top:2px;">30% base + 75% del excedente de casa.</div>
                     </div>
                     <span class="monto" id="montoPersonal">0.00 €</span>
                 </div>
                 <div class="finanzas-box coche">
                     <div>
-                        <strong>Para el Coche (40% + Sobrante)</strong>
-                        <div style="font-size: 11px; color: #7f8c8d; margin-top:2px;">Tu base de coche más el 25% de lo que exceda de casa.</div>
+                        <strong>Para el Coche</strong>
+                        <div style="font-size: 11px; color: #7f8c8d; margin-top:2px;">40% base + 25% del excedente de casa.</div>
                     </div>
                     <span class="monto" id="montoCoche">0.00 €</span>
                 </div>
             </div>
 
-            <div class="consejo-box" id="consejoFinanciero">
-                </div>
+            <div class="consejo-box" id="consejoFinanciero"></div>
+        </div>
+
+        <div class="card" style="padding-bottom: 15px;">
+            <h2>Historial de Distribución Mensual (Nube)</h2>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Mes</th>
+                            <th>Total</th>
+                            <th>Casa</th>
+                            <th>Para Mí</th>
+                            <th>Coche</th>
+                            <th>Ajustes</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaHistorialYuli"></tbody>
+                </table>
+                <div id="sinDatosYuli" class="no-data">No hay meses guardados en el archivo.</div>
+            </div>
         </div>
     </div>
 
 </div>
 
 <script>
-    // --- AUTENTICACIÓN SE SEGURIDAD ---
-    let loginCorrecto = false;
     let usuarioActivo = "";
-
-    while (!loginCorrecto) {
-        let intento = prompt("Introduce tu contraseña de acceso:");
-        
-        if (intento === "Mauri123") {
-            loginCorrecto = true;
-            usuarioActivo = "mauri";
-            document.body.classList.add('tema-mauri');
-            document.getElementById('vistaMauri').style.display = 'block';
-        } else if (intento === "Yuli123") {
-            loginCorrecto = true;
-            usuarioActivo = "yuli";
-            document.body.classList.add('tema-yuli');
-            document.getElementById('vistaYuli').style.display = 'block';
-            
-            const dineroGuardado = localStorage.getItem('dineroYuli');
-            if(dineroGuardado) {
-                document.getElementById('dineroTotal').value = dineroGuardado;
-                calcularRepartoYuli(Number(dineroGuardado));
-            }
-        } else {
-            alert("Acceso Inválido. Escribe la contraseña respetando mayúsculas.");
-        }
-    }
-
-    // --- CONEXIÓN CLOUD CLAVE API ---
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzmK5KJ6Z1CSPUpCyjqra_yRqPy-XORad5VVVAoczJnnOo7w0YCRssfzKfMXuT_s7VJyQ/exec";
-    let historial = JSON.parse(localStorage.getItem('historialDieta')) || [];
     
-    function ponerFechaDeHoy() {
-        if(document.getElementById('editIndex').value === "-1" && document.getElementById('fecha')) {
-            const hoy = new Date();
-            document.getElementById('fecha').value = hoy.getDate() + "/" + (hoy.getMonth() + 1);
+    // =========================================================================
+    // REEMPLAZA ESTA URL POR LA QUE TE DA GOOGLE EN TU NUEVA IMPLEMENTACIÓN
+    // =========================================================================
+    const WEB_APP_URL = "HAZ_UNA_NUEVA_IMPLEMENTACION_Y_PEGA_AQUI_TU_NUEVA_URL";
+
+    function intentarAcceso() {
+        const pass = document.getElementById('inputPassword').value;
+        if (pass === "Mauri123") {
+            usuarioActivo = "mauri";
+            finalizarLogin('tema-mauri', 'vistaMauri');
+            inicializarMauri();
+        } else if (pass === "Yuli123") {
+            usuarioActivo = "yuli";
+            finalizarLogin('tema-yuli', 'vistaYuli');
+            inicializarYuli();
+        } else {
+            alert("Contraseña incorrecta. Inténtalo de nuevo.");
         }
     }
 
-    if(usuarioActivo === "mauri") {
-        document.getElementById('metaCalorias').addEventListener('input', actualizarInterfaz);
-        document.getElementById('metaPasos').addEventListener('input', actualizarInterfaz);
+    function finalizarLogin(claseTema, idVista) {
+        document.getElementById('pantallaLogin').style.display = 'none';
+        document.body.classList.add(claseTema);
+        document.getElementById(idVista).style.display = 'block';
     }
 
-    function actualizarInterfaz() {
-        if(usuarioActivo !== "mauri") return;
+    document.getElementById('inputPassword').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') intentarAcceso();
+    });
+
+
+    // ================= MÓDULO MAURI (DIETA/PASOS) =================
+    let historial = JSON.parse(localStorage.getItem('historialDieta')) || [];
+
+    function inicializarMauri() {
+        document.getElementById('metaCalorias').addEventListener('input', actualizarInterfazMauri);
+        document.getElementById('metaPasos').addEventListener('input', actualizarInterfazMauri);
+        const hoy = new Date();
+        document.getElementById('fecha').value = hoy.getDate() + "/" + (hoy.getMonth() + 1);
+        document.getElementById('registroForm').addEventListener('submit', guardarMauri);
+        document.getElementById('btnReiniciar').addEventListener('click', reiniciarMauri);
+        actualizarInterfazMauri();
+    }
+
+    function actualizarInterfazMauri() {
         const tbody = document.getElementById('tablaHistorial');
         const sinDatos = document.getElementById('sinDatos');
-        
         const mKcal = Number(document.getElementById('metaCalorias').value) || 2000;
         const mPasos = Number(document.getElementById('metaPasos').value) || 10000;
 
         tbody.innerHTML = "";
-        
         if (historial.length === 0) {
             sinDatos.style.display = "block";
-            document.getElementById('statDias').innerText = 0;
-            document.getElementById('statCalorias').innerText = 0;
-            document.getElementById('statPasos').innerText = 0;
-            document.getElementById('statGym').innerText = 0;
+            ['statDias', 'statCalorias', 'statPasos', 'statGym'].forEach(id => document.getElementById(id).innerText = 0);
             return;
         }
         sinDatos.style.display = "none";
 
-        let totalCalorias = 0;
-        let totalPasos = 0;
-        let totalGym = 0;
-
-        historial.forEach((dia, index) => {
-            const row = document.createElement('tr');
-            const kcalClase = Number(dia.calorias) <= mKcal ? 'bien' : 'mal'; 
-            const pasosClase = Number(dia.pasos) >= mPasos ? 'bien' : 'mal';
-            const gymClase = dia.gym === 'Sí' ? 'bien' : 'mal';
-
-            row.innerHTML = `
+        let tKcal = 0, tPasos = 0, tGym = 0;
+        historial.forEach((dia, idx) => {
+            const r = document.createElement('tr');
+            r.innerHTML = `
                 <td><strong>${dia.fecha}</strong></td>
-                <td class="${kcalClase}">${Number(dia.calorias).toLocaleString()}</td>
-                <td class="${pasosClase}">${Number(dia.pasos).toLocaleString()}</td>
-                <td class="${gymClase}">${dia.gym}</td>
+                <td class="${Number(dia.calorias) <= mKcal ? 'bien' : 'mal'}">${Number(dia.calorias).toLocaleString()}</td>
+                <td class="${Number(dia.pasos) >= mPasos ? 'bien' : 'mal'}">${Number(dia.pasos).toLocaleString()}</td>
+                <td class="${dia.gym === 'Sí' ? 'bien' : 'mal'}">${dia.gym}</td>
                 <td>
-                    <button class="btn-mini btn-edit" onclick="editarDia(${index})">✏️</button>
-                    <button class="btn-mini btn-del" onclick="borrarDia(${index})">🗑️</button>
+                    <button class="btn-mini btn-edit" onclick="editarDiaMauri(${idx})">✏️</button>
+                    <button class="btn-mini btn-del" onclick="borrarDiaMauri(${idx})">🗑️</button>
                 </td>
             `;
-            tbody.insertBefore(row, tbody.firstChild);
-
-            totalCalorias += Number(dia.calorias);
-            totalPasos += Number(dia.pasos);
-            if(dia.gym === 'Sí') totalGym++;
+            tbody.insertBefore(r, tbody.firstChild);
+            tKcal += Number(dia.calorias); tPasos += Number(dia.pasos); if(dia.gym === 'Sí') tGym++;
         });
 
-        const numDias = historial.length;
-        document.getElementById('statDias').innerText = numDias;
-        document.getElementById('statCalorias').innerText = Math.round(totalCalorias / numDias);
-        document.getElementById('statPasos').innerText = Math.round(totalPasos / numDias).toLocaleString();
-        document.getElementById('statGym').innerText = totalGym;
+        document.getElementById('statDias').innerText = historial.length;
+        document.getElementById('statCalorias').innerText = Math.round(tKcal / historial.length);
+        document.getElementById('statPasos').innerText = Math.round(tPasos / historial.length).toLocaleString();
+        document.getElementById('statGym').innerText = tGym;
     }
 
-    if(usuarioActivo === "mauri") {
-        document.getElementById('registroForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const btn = document.getElementById('btnEnviar');
-            const mensaje = document.getElementById('mensajeExito');
-            const editIndex = parseInt(document.getElementById('editIndex').value);
-            btn.disabled = true;
-            btn.innerText = "Guardando...";
+    function guardarMauri(e) {
+        e.preventDefault();
+        const btn = document.getElementById('btnEnviar');
+        const idx = parseInt(document.getElementById('editIndex').value);
+        btn.disabled = true;
 
-            const nuevosDatos = {
-                fecha: document.getElementById('fecha').value,
-                calorias: document.getElementById('calorias').value,
-                pasos: document.getElementById('pasos').value,
-                gym: document.getElementById('gym').value
-            };
-
-            fetch(WEB_APP_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(nuevosDatos)
-            })
-            .then(() => {
-                if (editIndex === -1) {
-                    historial.push(nuevosDatos);
-                } else {
-                    historial[editIndex] = nuevosDatos;
-                    document.getElementById('editIndex').value = "-1";
-                    document.getElementById('formTitulo').innerText = "Añadir Registro Diario";
-                    document.getElementById('btnCancelarEdicion').style.display = "none";
-                }
-                localStorage.setItem('historialDieta', JSON.stringify(historial));
-                actualizarInterfaz();
-                mensaje.style.display = "block";
-                document.getElementById('registroForm').reset();
-                ponerFechaDeHoy();
-                btn.disabled = false;
-                btn.innerText = "Guardar Registro";
-                setTimeout(() => { mensaje.style.display = "none"; }, 4000);
-            })
-            .catch(error => {
-                alert('Fallo de red con la nube de Google.');
-                btn.disabled = false;
-                btn.innerText = "Guardar Registro";
-            });
-        });
-
-        window.editarDia = function(index) {
-            const dia = historial[index];
-            document.getElementById('editIndex').value = index;
-            document.getElementById('fecha').value = dia.fecha;
-            document.getElementById('calorias').value = dia.calorias;
-            document.getElementById('pasos').value = dia.pasos;
-            document.getElementById('gym').value = dia.gym;
-            document.getElementById('formTitulo').innerText = "Editando el día: " + dia.fecha;
-            document.getElementById('btnCancelarEdicion').style.display = "block";
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+        const datos = {
+            tipo: "Mauri",
+            fecha: document.getElementById('fecha').value,
+            calorias: document.getElementById('calorias').value,
+            pasos: document.getElementById('pasos').value,
+            gym: document.getElementById('gym').value
         };
 
-        document.getElementById('btnCancelarEdicion').addEventListener('click', function() {
+        fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(datos) })
+        .then(() => {
+            if (idx === -1) historial.push(datos); else historial[idx] = datos;
+            localStorage.setItem('historialDieta', JSON.stringify(historial));
             document.getElementById('editIndex').value = "-1";
             document.getElementById('formTitulo').innerText = "Añadir Registro Diario";
+            document.getElementById('btnCancelarEdicion').style.display = "none";
             document.getElementById('registroForm').reset();
-            ponerFechaDeHoy();
-            this.style.display = "none";
-        });
-
-        window.borrarDia = function(index) {
-            if(confirm("¿Eliminar este registro de pantalla?")) {
-                historial.splice(index, 1);
-                localStorage.setItem('historialDieta', JSON.stringify(historial));
-                actualizarInterfaz();
-            }
-        };
-
-        document.getElementById('btnReiniciar').addEventListener('click', function() {
-            if (confirm("¿Limpiar por completo los datos visuales?")) {
-                localStorage.removeItem('historialDieta');
-                historial = [];
-                actualizarInterfaz();
-                ponerFechaDeHoy();
-            }
-        });
-
-        actualizarInterfaz();
-        ponerFechaDeHoy();
+            const hoy = new Date(); document.getElementById('fecha').value = hoy.getDate() + "/" + (hoy.getMonth() + 1);
+            actualizarInterfazMauri();
+            btn.disabled = false;
+        }).catch(() => { alert("Error al conectar con la nube."); btn.disabled = false; });
     }
 
-    // --- LÓGICA AVANZADA DE REPARTO FINANCIERO (YULI) ---
-    function calcularRepartoYuli(total) {
-        if (isNaN(total) || total < 0) total = 0;
+    window.editarDiaMauri = function(idx) {
+        const d = historial[idx];
+        document.getElementById('editIndex').value = idx;
+        document.getElementById('fecha').value = d.fecha;
+        document.getElementById('calorias').value = d.calorias;
+        document.getElementById('pasos').value = d.pasos;
+        document.getElementById('gym').value = d.gym;
+        document.getElementById('formTitulo').innerText = "Editando día: " + d.fecha;
+        document.getElementById('btnCancelarEdicion').style.display = "block";
+    };
+
+    window.borrarDiaMauri = function(idx) {
+        if(confirm("¿Eliminar?")) { historial.splice(idx, 1); localStorage.setItem('historialDieta', JSON.stringify(historial)); actualizarInterfazMauri(); }
+    };
+    function reiniciarMauri() { if(confirm("¿Reiniciar?")) { localStorage.removeItem('historialDieta'); historial = []; actualizarInterfazMauri(); } }
+
+
+    // ================= MÓDULO YULI (FINANZAS CLOUD + SINCRONIZADAS) =================
+    let historialYuli = JSON.parse(localStorage.getItem('historialFinanzasYuli')) || [];
+
+    function inicializarYuli() {
+        const meses = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+        document.getElementById('mesYuli').value = meses[new Date().getMonth()];
         
-        let casa = total * 0.30;
-        let personal = total * 0.30;
-        let coche = total * 0.40;
-        let textoConsejo = "";
+        document.getElementById('formFinanzasYuli').addEventListener('submit', procesarCalculoYuli);
+        document.getElementById('btnCancelarEdicionYuli').addEventListener('click', cancelarEdicionYuli);
+        actualizarTablaYuli();
+    }
 
-        // Aplicación del algoritmo de tope máximo de 200€ para Casa
+    function ejecutarAlgoritmoReparto(ingresoBruto) {
+        const costoGym = 34.95;
+        const netoLimpio = Math.max(0, ingresoBruto - costoGym);
+
+        let casa = netoLimpio * 0.30;
+        let personal = netoLimpio * 0.30;
+        let coche = netoLimpio * 0.40;
+        let aplicaExcedente = false;
+        let excedenteDinero = 0;
+
         if (casa > 200) {
-            const excedente = casa - 200;
-            casa = 200; // Congelamos en el tope
-            
-            // Repartimos el sobrante: 75% personal y 25% coche
-            const sobrantePersonal = excedente * 0.75;
-            const sobranteCoche = excedente * 0.25;
-            
-            personal += sobrantePersonal;
-            coche += sobranteCoche;
-
-            textoConsejo = `<strong>✨ ¡Regla de Excedente Aplicada!</strong><br>Como el 30% asignado para Casa superaba tu límite de 200€, hemos fijado la vivienda en un precio cerrado de 200.00 €. El dinero extra sobrante (${excedente.toFixed(2)} €) ha sido redirigido automáticamente: un <strong>75% se sumó para Ti</strong> (+${sobrantePersonal.toFixed(2)} €) y un <strong>25% se sumó para tu Coche</strong> (+${sobranteCoche.toFixed(2)} €). ¡Una distribución brillante para maximizar tus ahorros personales este verano!`;
-        } else {
-            textoConsejo = `<strong>💡 Distribución Básica Activa:</strong><br>Tu presupuesto de vivienda se mantiene por debajo de los 200€. El reparto se ejecuta de forma estándar respetando el equilibrio del 30% personal, 30% para tu casa y 40% dedicado a los gastos del vehículo.`;
+            aplicaExcedente = true;
+            excedenteDinero = casa - 200;
+            casa = 200;
+            personal += (excedenteDinero * 0.75);
+            coche += (excedenteDinero * 0.25);
         }
 
-        // Inyección de textos formateados
-        document.getElementById('montoCasa').innerText = casa.toFixed(2) + " €";
-        document.getElementById('montoPersonal').innerText = personal.toFixed(2) + " €";
-        document.getElementById('montoCoche').innerText = coche.toFixed(2) + " €";
-        document.getElementById('consejoFinanciero').innerHTML = textoConsejo;
-
-        document.getElementById('resultadosFinanzas').style.display = "block";
+        return { bruto: ingresoBruto, gym: costoGym, limpio: netoLimpio, casa, personal, coche, aplicaExcedente, excedenteDinero };
     }
 
-    if(usuarioActivo === "yuli") {
-        document.getElementById('btnCalcularFinanzas').addEventListener('click', function() {
-            const total = Number(document.getElementById('dineroTotal').value);
-            localStorage.setItem('dineroYuli', total);
-            calcularRepartoYuli(total);
+    function procesarCalculoYuli(e) {
+        e.preventDefault();
+        const btn = document.getElementById('btnCalcularFinanzas');
+        const bruto = Number(document.getElementById('dineroTotal').value);
+        const mes = document.getElementById('mesYuli').value;
+        const idx = parseInt(document.getElementById('editIndexYuli').value);
+
+        btn.disabled = true;
+        btn.innerText = "Sincronizando Cloud...";
+
+        const r = ejecutarAlgoritmoReparto(bruto);
+
+        // Actualizar visuales en directo
+        document.getElementById('montoCasa').innerText = r.casa.toFixed(2) + " €";
+        document.getElementById('montoPersonal').innerText = r.personal.toFixed(2) + " €";
+        document.getElementById('montoCoche').innerText = r.coche.toFixed(2) + " €";
+        
+        document.getElementById('consejoFinanciero').innerHTML = r.aplicaExcedente 
+            ? `<strong>✨ ¡Excedente de Casa Activado!</strong><br>Restados 34.95€ de Gym, el 30% de casa superaba el límite. Se fijó la vivienda en 200.00€. Los ${r.excedenteDinero.toFixed(2)}€ sobrantes se dividieron: 75% para ti (+${(r.excedenteDinero*0.75).toFixed(2)}€) y 25% al coche (+${(r.excedenteDinero*0.25).toFixed(2)}€).`
+            : `<strong>💡 Reparto Estándar:</strong> Gastos de Gym descontados. La casa no supera los 200€, por lo que se mantienen las bases estables (30% casa, 30% tú, 40% coche).`;
+        
+        document.getElementById('resultadosFinanzas').style.display = "block";
+
+        const registroMes = { 
+            tipo: "YuliFinanzas",
+            mes: mes, 
+            total: bruto, 
+            casa: r.casa.toFixed(2), 
+            personal: r.personal.toFixed(2), 
+            coche: r.coche.toFixed(2) 
+        };
+
+        // Enviar datos directos a la pestaña "Finanzas" de Google Sheets
+        fetch(WEB_APP_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            body: JSON.stringify(registroMes)
+        })
+        .then(() => {
+            if (idx === -1) {
+                historialYuli.push(registroMes);
+            } else {
+                historialYuli[idx] = registroMes;
+                cancelarEdicionYuli();
+            }
+
+            localStorage.setItem('historialFinanzasYuli', JSON.stringify(historialYuli));
+            actualizarTablaYuli();
+            
+            btn.disabled = false;
+            btn.innerText = "Calcular y Subir a Google Sheets";
+        })
+        .catch(error => {
+            alert("Error de sincronización con la nube. Revisa la URL asignada.");
+            btn.disabled = false;
+            btn.innerText = "Calcular y Subir a Google Sheets";
         });
+    }
+
+    function actualizarTablaYuli() {
+        const tbody = document.getElementById('tablaHistorialYuli');
+        const sinDatos = document.getElementById('sinDatosYuli');
+        tbody.innerHTML = "";
+
+        if(historialYuli.length === 0) { sinDatos.style.display = "block"; return; }
+        sinDatos.style.display = "none";
+
+        historialYuli.forEach((m, idx) => {
+            const r = document.createElement('tr');
+            r.innerHTML = `
+                <td><strong>${m.mes}</strong></td>
+                <td>${Number(m.total).toFixed(2)} €</td>
+                <td>${Number(m.casa).toFixed(2)} €</td>
+                <td>${Number(m.personal).toFixed(2)} €</td>
+                <td>${Number(m.coche).toFixed(2)} €</td>
+                <td>
+                    <button class="btn-mini btn-edit" onclick="editarMesYuli(${idx})">✏️</button>
+                    <button class="btn-mini btn-del" onclick="borrarMesYuli(${idx})">🗑️</button>
+                </td>
+            `;
+            tbody.insertBefore(r, tbody.firstChild);
+        });
+    }
+
+    window.editarMesYuli = function(idx) {
+        const m = historialYuli[idx];
+        document.getElementById('editIndexYuli').value = idx;
+        document.getElementById('mesYuli').value = m.mes;
+        document.getElementById('dineroTotal').value = m.total;
+        
+        document.getElementById('formTituloYuli').innerText = "Modificando el mes de: " + m.mes;
+        document.getElementById('btnCancelarEdicionYuli').style.display = "block";
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    window.borrarMesYuli = function(idx) {
+        if(confirm(`¿Estás segura de que quieres eliminar el historial de este mes de la pantalla?`)) {
+            historialYuli.splice(idx, 1);
+            localStorage.setItem('historialFinanzasYuli', JSON.stringify(historialYuli));
+            actualizarTablaYuli();
+            document.getElementById('resultadosFinanzas').style.display = "none";
+        }
+    };
+
+    function cancelarEdicionYuli() {
+        document.getElementById('editIndexYuli').value = "-1";
+        document.getElementById('formTituloYuli').innerText = "Ingresar Fondos Mensuales";
+        document.getElementById('formFinanzasYuli').reset();
+        const meses = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+        document.getElementById('mesYuli').value = meses[new Date().getMonth()];
+        document.getElementById('btnCancelarEdicionYuli').style.display = "none";
     }
 </script>
 
