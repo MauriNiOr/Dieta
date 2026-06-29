@@ -3,72 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Panel Personal</title>
+    <title>Panel Personalizado</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        
+        /* Estilos base del Body - Cambian dinámicamente con JS */
         body { 
-            background: linear-gradient(135deg, #e0f2f1 0%, #f1f8e9 100%); 
-            background-attachment: fixed;
+            background: #f0f3f4;
             color: #2c3e50; 
             padding: 20px; 
             display: flex; 
             justify-content: center; 
             align-items: flex-start; 
             min-height: 100vh; 
+            transition: background 0.5s ease;
         }
+        
+        /* Temas de fondo según usuario */
+        body.tema-mauri {
+            background: linear-gradient(135deg, #111d1a 0%, #2c3e50 100%);
+            background-attachment: fixed;
+        }
+        body.tema-yuli {
+            background: linear-gradient(135deg, #ffebee 0%, #f3e5f5 100%);
+            background-attachment: fixed;
+        }
+
         .wrapper { width: 100%; max-width: 550px; display: block; }
         
-        /* Tarjetas */
-        .card { background: rgba(255, 255, 255, 0.95); padding: 25px; border-radius: 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.06); margin-bottom: 20px; backdrop-filter: blur(5px); }
-        h1 { font-size: 26px; text-align: center; color: #117a65; margin-bottom: 5px; }
-        p.subtitle { text-align: center; color: #7f8c8d; font-size: 14px; margin-bottom: 20px; }
-        h2 { font-size: 18px; color: #34495e; margin-bottom: 15px; border-left: 4px solid #1abc9c; padding-left: 10px; }
+        /* Tarjetas con efecto cristal */
+        .card { 
+            background: rgba(255, 255, 255, 0.96); 
+            padding: 25px; 
+            border-radius: 20px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08); 
+            margin-bottom: 25px; 
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.5);
+            transition: all 0.3s ease;
+        }
         
-        /* Formularios y campos */
+        /* Encabezados personalizados por Estilo */
+        .tema-mauri .card { border-top: 5px solid #1abc9c; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .tema-yuli .card { border-top: 5px solid #ec407a; }
+
+        h1 { font-size: 26px; text-align: center; margin-bottom: 5px; font-weight: 800; }
+        .tema-mauri h1 { color: #1abc9c; text-transform: uppercase; letter-spacing: 1px; }
+        .tema-yuli h1 { color: #d81b60; font-family: 'Georgia', serif; }
+
+        p.subtitle { text-align: center; color: #7f8c8d; font-size: 14px; margin-bottom: 25px; }
+        
+        h2 { font-size: 18px; color: #34495e; margin-bottom: 15px; padding-left: 10px; font-weight: 700; }
+        .tema-mauri h2 { border-left: 4px solid #1abc9c; }
+        .tema-yuli h2 { border-left: 4px solid #ec407a; color: #8e24aa; }
+        
+        /* Campos de Formulario */
         .form-group { margin-bottom: 15px; }
-        .form-row { display: flex; gap: 10px; margin-bottom: 15px; }
+        .form-row { display: flex; gap: 12px; margin-bottom: 15px; }
         .form-row .form-group { flex: 1; margin-bottom: 0; }
         label { display: block; margin-bottom: 6px; font-size: 13px; font-weight: 600; color: #4b6584; }
-        input[type="number"], input[type="text"], select { width: 100%; padding: 11px; border: 1px solid #dcdde1; border-radius: 8px; font-size: 15px; background-color: #f9f9f9; transition: all 0.3s; }
-        input[type="number"]:focus, input[type="text"]:focus, select:focus { border-color: #1abc9c; background-color: #fff; outline: none; }
+        input[type="number"], input[type="text"], select { width: 100%; padding: 12px; border: 1px solid #dcdde1; border-radius: 10px; font-size: 15px; background-color: #fdfefe; transition: all 0.3s; }
         
-        /* Botones */
-        button { width: 100%; padding: 13px; background-color: #1abc9c; border: none; border-radius: 8px; color: white; font-size: 16px; font-weight: bold; cursor: pointer; transition: background 0.3s; }
-        button:hover { background-color: #16a085; }
+        .tema-mauri input:focus, .tema-mauri select:focus { border-color: #1abc9c; outline: none; box-shadow: 0 0 8px rgba(26,188,156,0.3); }
+        .tema-yuli input:focus, .tema-yuli select:focus { border-color: #ec407a; outline: none; box-shadow: 0 0 8px rgba(236,64,122,0.3); }
         
-        .btn-danger { background-color: #e74c3c; margin-top: 15px; padding: 10px; font-size: 14px; }
-        .btn-danger:hover { background-color: #c0392b; }
-        .btn-mini { padding: 4px 8px; font-size: 12px; font-weight: normal; width: auto; display: inline-block; border-radius: 4px; margin-left: 2px; }
+        /* Botones Potentes */
+        button { width: 100%; padding: 14px; border: none; border-radius: 10px; color: white; font-size: 16px; font-weight: bold; cursor: pointer; transition: all 0.3s ease; }
+        .tema-mauri button { background: linear-gradient(135deg, #1abc9c 0%, #16a085 100%); }
+        .tema-mauri button:hover { background: linear-gradient(135deg, #16a085 0%, #117a65 100%); }
+        .tema-yuli button { background: linear-gradient(135deg, #ec407a 0%, #ab47bc 100%); }
+        .tema-yuli button:hover { background: linear-gradient(135deg, #d81b60 0%, #8e24aa 100%); }
+        
+        .btn-danger { background: #e74c3c !important; margin-top: 15px; padding: 10px; font-size: 14px; }
+        .btn-danger:hover { background: #c0392b !important; }
+        .btn-mini { padding: 5px 9px; font-size: 12px; font-weight: normal; width: auto; display: inline-block; border-radius: 6px; margin-left: 2px; }
         .btn-edit { background-color: #3498db; }
         .btn-del { background-color: #e74c3c; }
         
-        /* Finanzas específicas */
-        .h2-finanzas { border-left-color: #3498db; }
-        .finanzas-grid { display: flex; flex-direction: column; gap: 12px; margin-top: 15px; }
-        .finanzas-box { background: #f4f9fd; padding: 15px; border-radius: 10px; border-left: 5px solid #3498db; display: flex; justify-content: space-between; align-items: center; }
-        .finanzas-box.personal { border-left-color: #9b59b6; background: #faf5fc; }
-        .finanzas-box.casa { border-left-color: #2ecc71; background: #f5fcf7; }
-        .finanzas-box.coche { border-left-color: #e67e22; background: #fcf8f5; }
-        .finanzas-box span.monto { font-size: 20px; font-weight: bold; color: #2c3e50; }
-        .consejo-box { background: #fffde7; padding: 15px; border-radius: 10px; border: 1px dashed #f1c40f; margin-top: 15px; font-size: 14px; line-height: 1.5; }
+        /* Finanzas de Yuli Estilo Chic */
+        .finanzas-grid { display: flex; flex-direction: column; gap: 14px; margin-top: 15px; }
+        .finanzas-box { padding: 18px; border-radius: 14px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.02); transition: transform 0.2s; }
+        .finanzas-box:hover { transform: translateX(5px); }
+        .finanzas-box.personal { border-left: 5px solid #ab47bc; background: #fbf5fc; }
+        .finanzas-box.casa { border-left: 5px solid #26a69a; background: #f2faf9; }
+        .finanzas-box.coche { border-left: 5px solid #ff9800; background: #fffbe6; }
+        .finanzas-box span.monto { font-size: 22px; font-weight: bold; color: #2c3e50; }
+        .consejo-box { background: #fffde7; padding: 15px; border-radius: 12px; border: 1px dashed #f1c40f; margin-top: 15px; font-size: 13px; line-height: 1.6; color: #7f6000; }
         
-        /* Stats Dashboard Dieta */
+        /* Marcadores Fitness Mauri */
         .stats-grid { display: block; width: 100%; }
-        .stat-box { display: inline-block; width: 48%; background: #f4fbf9; padding: 12px; border-radius: 10px; text-align: center; margin-bottom: 12px; border: 1px solid #e0f2f1; }
+        .stat-box { display: inline-block; width: 48%; background: #f2fbf9; padding: 15px; border-radius: 12px; text-align: center; margin-bottom: 12px; border: 1px solid #e0f2f1; }
         .stat-box:nth-child(even) { float: right; }
-        .stat-box .num { display: block; font-size: 18px; font-weight: bold; color: #16a085; }
-        .stat-box .lbl { font-size: 11px; color: #7f8c8d; margin-top: 2px; }
+        .stat-box .num { display: block; font-size: 22px; font-weight: 800; color: #16a085; }
+        .stat-box .lbl { font-size: 11px; color: #7f8c8d; text-transform: uppercase; font-weight: 600; margin-top: 3px; }
         .clearfix { clear: both; }
 
-        /* Colores condicionales */
+        /* Alertas de Meta */
         .mal { color: #c0392b !important; background-color: #fadbd8 !important; font-weight: bold; }
         .bien { color: #27ae60 !important; background-color: #d4efdf !important; font-weight: bold; }
         
-        /* Historial y Tablas */
+        /* Tablas */
         .table-wrapper { overflow-x: auto; margin-top: 10px; }
-        table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; min-width: 400px; }
-        th { background-color: #f4f6f6; padding: 12px 8px; font-weight: 600; color: #7f8c8d; border-bottom: 2px solid #eaeded; }
-        td { padding: 10px 8px; border-bottom: 1px solid #f2f4f4; color: #2c3e50; }
+        table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; min-width: 420px; }
+        th { background-color: #f8f9f9; padding: 12px 8px; font-weight: 700; color: #7f8c8d; border-bottom: 2px solid #eaeded; }
+        td { padding: 12px 8px; border-bottom: 1px solid #f2f4f4; color: #2c3e50; }
         .no-data { text-align: center; color: #bdc3c7; padding: 20px 0; font-style: italic; }
     </style>
 </head>
@@ -78,43 +116,43 @@
 
     <div id="vistaMauri" style="display: none;">
         <div class="card">
-            <h1>Mi Progreso de Verano</h1>
-            <p class="subtitle">Control diario de salud y energía</p>
+            <h1>Mauri · Fitness Tracker</h1>
+            <p class="subtitle">Monitoreo extremo de rendimiento de verano</p>
             
-            <h2>Definir Mis Metas Diarias</h2>
+            <h2>Establecer Objetivos Rápidos</h2>
             <div class="form-row">
                 <div class="form-group">
-                    <label for="metaCalorias">Máximo Kcal/día</label>
+                    <label for="metaCalorias">Límite Kcal</label>
                     <input type="number" id="metaCalorias" value="2000">
                 </div>
                 <div class="form-group">
-                    <label for="metaPasos">Mínimo Pasos/día</label>
+                    <label for="metaPasos">Meta Pasos</label>
                     <input type="number" id="metaPasos" value="10000">
                 </div>
             </div>
 
             <hr style="border: 0; border-top: 1px solid #eaeded; margin: 20px 0;">
 
-            <h2 id="formTitulo">Registrar Día de Hoy</h2>
+            <h2 id="formTitulo">Añadir Registro Diario</h2>
             <form id="registroForm">
                 <input type="hidden" id="editIndex" value="-1">
                 <div class="form-row">
                     <div class="form-group" style="flex: 0.8;">
-                        <label for="fecha">Fecha</label>
-                        <input type="text" id="fecha" placeholder="Ej: 29/6" required>
+                        <label for="fecha">Día / Mes</label>
+                        <input type="text" id="fecha" required>
                     </div>
                     <div class="form-group">
-                        <label for="calorias">Calorías (kcal)</label>
-                        <input type="number" id="calorias" placeholder="Ej: 1950" required min="0">
+                        <label for="calorias">Calorías Totales</label>
+                        <input type="number" id="calorias" required min="0">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="pasos">Pasos Totales</label>
-                        <input type="number" id="pasos" placeholder="Ej: 10500" required min="0">
+                        <label for="pasos">Recuento Pasos</label>
+                        <input type="number" id="pasos" required min="0">
                     </div>
                     <div class="form-group">
-                        <label for="gym">¿Gym?</label>
+                        <label for="gym">¿Gimnasio?</label>
                         <select id="gym">
                             <option value="Sí">Sí 💪</option>
                             <option value="No">No 🛌</option>
@@ -124,19 +162,19 @@
                 <button type="submit" id="btnEnviar">Guardar Registro</button>
                 <button type="button" id="btnCancelarEdicion" class="btn-danger" style="display:none; margin-top:10px;">Cancelar Edición</button>
             </form>
-            <div id="mensajeExito" class="mensaje" style="color: #27ae60;">¡Cambios guardados con éxito!</div>
+            <div id="mensajeExito" class="mensaje" style="color: #27ae60;">¡Guardado en la base de datos!</div>
         </div>
 
         <div class="card">
-            <h2>Resumen Acumulado</h2>
+            <h2>Métricas de Rendimiento</h2>
             <div class="stats-grid">
                 <div class="stat-box">
                     <span class="num" id="statDias">0</span>
-                    <span class="lbl">Días Registrados</span>
+                    <span class="lbl">Días Activos</span>
                 </div>
                 <div class="stat-box">
                     <span class="num" id="statCalorias">0</span>
-                    <span class="lbl">Media kcal</span>
+                    <span class="lbl">Media Kcal</span>
                 </div>
                 <div class="stat-box">
                     <span class="num" id="statPasos">0</span>
@@ -144,14 +182,14 @@
                 </div>
                 <div class="stat-box">
                     <span class="num" id="statGym">0</span>
-                    <span class="lbl">Días de Gym</span>
+                    <span class="lbl">Sesiones Gym</span>
                 </div>
                 <div class="clearfix"></div>
             </div>
         </div>
 
         <div class="card" style="padding-bottom: 15px;">
-            <h2>Historial (Rojo = No Cumplido | Verde = Cumplida)</h2>
+            <h2>Historial de Entradas</h2>
             <div class="table-wrapper">
                 <table>
                     <thead>
@@ -160,68 +198,66 @@
                             <th>Kcal</th>
                             <th>Pasos</th>
                             <th>Gym</th>
-                            <th>Acciones</th>
+                            <th>Ajustes</th>
                         </tr>
                     </thead>
                     <tbody id="tablaHistorial"></tbody>
                 </table>
-                <div id="sinDatos" class="no-data">Aún no hay registros guardados.</div>
+                <div id="sinDatos" class="no-data">No hay registros almacenados.</div>
             </div>
-            <button id="btnReiniciar" class="btn-danger">Reiniciar Historial de la Web</button>
+            <button id="btnReiniciar" class="btn-danger">Reiniciar Historial Visual</button>
         </div>
     </div>
 
 
     <div id="vistaYuli" style="display: none;">
-        <div class="card" style="border-top: 5px solid #3498db;">
-            <h1 style="color: #2980b9;">Mi Planificador Financiero</h1>
-            <p class="subtitle">Distribución inteligente de presupuestos</p>
+        <div class="card">
+            <h1>Yuli · Finanzas Inteligentes</h1>
+            <p class="subtitle">Gestión de presupuestos y objetivos con algoritmos de optimización</p>
             
-            <h2 class="h2-finanzas">Dinero Disponible</h2>
+            <h2>Ingresar Fondos</h2>
             <div class="form-group">
-                <label for="dineroTotal">Introduce la cantidad de dinero actual (€)</label>
-                <input type="number" id="dineroTotal" placeholder="Ej: 1500" min="0" value="0">
+                <label for="dineroTotal">¿Cuánto dinero tienes disponible hoy?</label>
+                <input type="number" id="dineroTotal" placeholder="Introduce la cantidad (€)" min="0" value="0">
             </div>
-            <button id="btnCalcularFinanzas" style="background-color: #3498db;">Calcular Distribución</button>
+            <button id="btnCalcularFinanzas">Calcular Mi Distribución</button>
         </div>
 
         <div class="card" id="resultadosFinanzas" style="display: none;">
-            <h2 class="h2-finanzas">Tu Distribución Sugerida (30% - 30% - 40%)</h2>
+            <h2>Tu Distribución Optimizada</h2>
             <div class="finanzas-grid">
-                <div class="finanzas-box personal">
-                    <div>
-                        <strong>Para Mí (30%)</strong>
-                        <div style="font-size: 11px; color: #7f8c8d; margin-top:2px;">Gastos tuyos, caprichos o ahorro personal.</div>
-                    </div>
-                    <span class="monto" id="montoPersonal">0.00 €</span>
-                </div>
                 <div class="finanzas-box casa">
                     <div>
-                        <strong>Para Casa (30%)</strong>
-                        <div style="font-size: 11px; color: #7f8c8d; margin-top:2px;">Alquiler/hipoteca, comida, facturas o mejoras.</div>
+                        <strong>Para Casa (Max 200€)</strong>
+                        <div style="font-size: 11px; color: #7f8c8d; margin-top:2px;">30% asignado (Bloqueado si supera los 200€).</div>
                     </div>
                     <span class="monto" id="montoCasa">0.00 €</span>
                 </div>
+                <div class="finanzas-box personal">
+                    <div>
+                        <strong>Para Mí (30% + Sobrante)</strong>
+                        <div style="font-size: 11px; color: #7f8c8d; margin-top:2px;">Tu base de siempre más el 75% de lo que exceda de casa.</div>
+                    </div>
+                    <span class="monto" id="montoPersonal">0.00 €</span>
+                </div>
                 <div class="finanzas-box coche">
                     <div>
-                        <strong>Para el Coche (40%)</strong>
-                        <div style="font-size: 11px; color: #7f8c8d; margin-top:2px;">Gasolina, seguro, mantenimiento o fondo para averías.</div>
+                        <strong>Para el Coche (40% + Sobrante)</strong>
+                        <div style="font-size: 11px; color: #7f8c8d; margin-top:2px;">Tu base de coche más el 25% de lo que exceda de casa.</div>
                     </div>
                     <span class="monto" id="montoCoche">0.00 €</span>
                 </div>
             </div>
 
-            <div class="consejo-box">
-                <strong>💡 Recomendación del Asistente:</strong><br>
-                Tu idea de darle un <strong>40% al coche</strong> es súper madura y un gran acierto. Los vehículos suelen generar gastos imprevistos muy altos (revisiones, ruedas, seguros o averías sorpresa). Al blindar ese 40%, te aseguras de tener un colchón de tranquilidad absoluto para moverte. El 30% para casa mantiene la estabilidad del hogar y el 30% personal te da total libertad para disfrutar el verano sin culpa.
-            </div>
+            <div class="consejo-box" id="consejoFinanciero">
+                </div>
         </div>
     </div>
 
 </div>
 
 <script>
-    // --- CONTROL DE SEGURIDAD INTEGRADO ---
+    // --- AUTENTICACIÓN SE SEGURIDAD ---
     let loginCorrecto = false;
     let usuarioActivo = "";
 
@@ -231,24 +267,25 @@
         if (intento === "Mauri123") {
             loginCorrecto = true;
             usuarioActivo = "mauri";
+            document.body.classList.add('tema-mauri');
             document.getElementById('vistaMauri').style.display = 'block';
         } else if (intento === "Yuli123") {
             loginCorrecto = true;
             usuarioActivo = "yuli";
+            document.body.classList.add('tema-yuli');
             document.getElementById('vistaYuli').style.display = 'block';
             
-            // Cargar dinero si ya estaba guardado en el navegador de Yuli
             const dineroGuardado = localStorage.getItem('dineroYuli');
             if(dineroGuardado) {
                 document.getElementById('dineroTotal').value = dineroGuardado;
-                calcularRepartoFinanciero(Number(dineroGuardado));
+                calcularRepartoYuli(Number(dineroGuardado));
             }
         } else {
-            alert("Contraseña incorrecta. Inténtalo de nuevo.");
+            alert("Acceso Inválido. Escribe la contraseña respetando mayúsculas.");
         }
     }
 
-    // --- ENLACE CON GOOGLE SHEETS (Para la sección de Mauri) ---
+    // --- CONEXIÓN CLOUD CLAVE API ---
     const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzmK5KJ6Z1CSPUpCyjqra_yRqPy-XORad5VVVAoczJnnOo7w0YCRssfzKfMXuT_s7VJyQ/exec";
     let historial = JSON.parse(localStorage.getItem('historialDieta')) || [];
     
@@ -346,7 +383,7 @@
                 } else {
                     historial[editIndex] = nuevosDatos;
                     document.getElementById('editIndex').value = "-1";
-                    document.getElementById('formTitulo').innerText = "Registrar Día de Hoy";
+                    document.getElementById('formTitulo').innerText = "Añadir Registro Diario";
                     document.getElementById('btnCancelarEdicion').style.display = "none";
                 }
                 localStorage.setItem('historialDieta', JSON.stringify(historial));
@@ -359,7 +396,7 @@
                 setTimeout(() => { mensaje.style.display = "none"; }, 4000);
             })
             .catch(error => {
-                alert('Error al conectar con Google.');
+                alert('Fallo de red con la nube de Google.');
                 btn.disabled = false;
                 btn.innerText = "Guardar Registro";
             });
@@ -379,14 +416,14 @@
 
         document.getElementById('btnCancelarEdicion').addEventListener('click', function() {
             document.getElementById('editIndex').value = "-1";
-            document.getElementById('formTitulo').innerText = "Registrar Día de Hoy";
+            document.getElementById('formTitulo').innerText = "Añadir Registro Diario";
             document.getElementById('registroForm').reset();
             ponerFechaDeHoy();
             this.style.display = "none";
         });
 
         window.borrarDia = function(index) {
-            if(confirm("¿Eliminar este día de la pantalla?")) {
+            if(confirm("¿Eliminar este registro de pantalla?")) {
                 historial.splice(index, 1);
                 localStorage.setItem('historialDieta', JSON.stringify(historial));
                 actualizarInterfaz();
@@ -394,7 +431,7 @@
         };
 
         document.getElementById('btnReiniciar').addEventListener('click', function() {
-            if (confirm("¿Borrar por completo el historial de esta pantalla?")) {
+            if (confirm("¿Limpiar por completo los datos visuales?")) {
                 localStorage.removeItem('historialDieta');
                 historial = [];
                 actualizarInterfaz();
@@ -406,30 +443,46 @@
         ponerFechaDeHoy();
     }
 
-    // --- LÓGICA DE FINANZAS DE YULI ---
-    if(usuarioActivo === "yuli") {
-        function calcularRepartoFinanciero(total) {
-            if (isNaN(total) || total < 0) total = 0;
+    // --- LÓGICA AVANZADA DE REPARTO FINANCIERO (YULI) ---
+    function calcularRepartoYuli(total) {
+        if (isNaN(total) || total < 0) total = 0;
+        
+        let casa = total * 0.30;
+        let personal = total * 0.30;
+        let coche = total * 0.40;
+        let textoConsejo = "";
+
+        // Aplicación del algoritmo de tope máximo de 200€ para Casa
+        if (casa > 200) {
+            const excedente = casa - 200;
+            casa = 200; // Congelamos en el tope
             
-            // Cálculos matemáticos de los porcentajes
-            const personal = total * 0.30;
-            const casa = total * 0.30;
-            const coche = total * 0.40;
+            // Repartimos el sobrante: 75% personal y 25% coche
+            const sobrantePersonal = excedente * 0.75;
+            const sobranteCoche = excedente * 0.25;
+            
+            personal += sobrantePersonal;
+            coche += sobranteCoche;
 
-            // Inyectar en las etiquetas visuales fijando 2 decimales
-            document.getElementById('montoPersonal').innerText = personal.toFixed(2) + " €";
-            document.getElementById('montoCasa').innerText = casa.toFixed(2) + " €";
-            document.getElementById('montoCoche').innerText = coche.toFixed(2) + " €";
-
-            // Mostrar la tarjeta de resultados
-            document.getElementById('resultadosFinanzas').style.display = "block";
+            textoConsejo = `<strong>✨ ¡Regla de Excedente Aplicada!</strong><br>Como el 30% asignado para Casa superaba tu límite de 200€, hemos fijado la vivienda en un precio cerrado de 200.00 €. El dinero extra sobrante (${excedente.toFixed(2)} €) ha sido redirigido automáticamente: un <strong>75% se sumó para Ti</strong> (+${sobrantePersonal.toFixed(2)} €) y un <strong>25% se sumó para tu Coche</strong> (+${sobranteCoche.toFixed(2)} €). ¡Una distribución brillante para maximizar tus ahorros personales este verano!`;
+        } else {
+            textoConsejo = `<strong>💡 Distribución Básica Activa:</strong><br>Tu presupuesto de vivienda se mantiene por debajo de los 200€. El reparto se ejecuta de forma estándar respetando el equilibrio del 30% personal, 30% para tu casa y 40% dedicado a los gastos del vehículo.`;
         }
 
+        // Inyección de textos formateados
+        document.getElementById('montoCasa').innerText = casa.toFixed(2) + " €";
+        document.getElementById('montoPersonal').innerText = personal.toFixed(2) + " €";
+        document.getElementById('montoCoche').innerText = coche.toFixed(2) + " €";
+        document.getElementById('consejoFinanciero').innerHTML = textoConsejo;
+
+        document.getElementById('resultadosFinanzas').style.display = "block";
+    }
+
+    if(usuarioActivo === "yuli") {
         document.getElementById('btnCalcularFinanzas').addEventListener('click', function() {
             const total = Number(document.getElementById('dineroTotal').value);
-            // Almacenar en la memoria del dispositivo para que no se borre al refrescar
             localStorage.setItem('dineroYuli', total);
-            calcularRepartoFinanciero(total);
+            calcularRepartoYuli(total);
         });
     }
 </script>
