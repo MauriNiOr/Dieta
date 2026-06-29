@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Registro de Hábitos</title>
+    <title>Mi Panel Personal</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { 
@@ -35,18 +35,24 @@
         /* Botones */
         button { width: 100%; padding: 13px; background-color: #1abc9c; border: none; border-radius: 8px; color: white; font-size: 16px; font-weight: bold; cursor: pointer; transition: background 0.3s; }
         button:hover { background-color: #16a085; }
-        button:disabled { background-color: #bdc3c7; cursor: not-allowed; }
         
         .btn-danger { background-color: #e74c3c; margin-top: 15px; padding: 10px; font-size: 14px; }
         .btn-danger:hover { background-color: #c0392b; }
-        
         .btn-mini { padding: 4px 8px; font-size: 12px; font-weight: normal; width: auto; display: inline-block; border-radius: 4px; margin-left: 2px; }
         .btn-edit { background-color: #3498db; }
-        .btn-edit:hover { background-color: #2980b9; }
         .btn-del { background-color: #e74c3c; }
-        .btn-del:hover { background-color: #c0392b; }
         
-        /* Stats Dashboard */
+        /* Finanzas específicas */
+        .h2-finanzas { border-left-color: #3498db; }
+        .finanzas-grid { display: flex; flex-direction: column; gap: 12px; margin-top: 15px; }
+        .finanzas-box { background: #f4f9fd; padding: 15px; border-radius: 10px; border-left: 5px solid #3498db; display: flex; justify-content: space-between; align-items: center; }
+        .finanzas-box.personal { border-left-color: #9b59b6; background: #faf5fc; }
+        .finanzas-box.casa { border-left-color: #2ecc71; background: #f5fcf7; }
+        .finanzas-box.coche { border-left-color: #e67e22; background: #fcf8f5; }
+        .finanzas-box span.monto { font-size: 20px; font-weight: bold; color: #2c3e50; }
+        .consejo-box { background: #fffde7; padding: 15px; border-radius: 10px; border: 1px dashed #f1c40f; margin-top: 15px; font-size: 14px; line-height: 1.5; }
+        
+        /* Stats Dashboard Dieta */
         .stats-grid { display: block; width: 100%; }
         .stat-box { display: inline-block; width: 48%; background: #f4fbf9; padding: 12px; border-radius: 10px; text-align: center; margin-bottom: 12px; border: 1px solid #e0f2f1; }
         .stat-box:nth-child(even) { float: right; }
@@ -63,138 +69,203 @@
         table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; min-width: 400px; }
         th { background-color: #f4f6f6; padding: 12px 8px; font-weight: 600; color: #7f8c8d; border-bottom: 2px solid #eaeded; }
         td { padding: 10px 8px; border-bottom: 1px solid #f2f4f4; color: #2c3e50; }
-        
-        .badge { padding: 3px 6px; border-radius: 8px; font-size: 11px; }
-        .mensaje { text-align: center; margin-top: 15px; font-weight: bold; display: none; font-size: 14px; }
         .no-data { text-align: center; color: #bdc3c7; padding: 20px 0; font-style: italic; }
     </style>
 </head>
 <body>
 
 <div class="wrapper">
-    <div class="card">
-        <h1>Mi Progreso de Verano</h1>
-        <p class="subtitle">Control diario de salud y energía</p>
-        
-        <h2>Definir Mis Metas Diarias</h2>
-        <div class="form-row">
-            <div class="form-group">
-                <label for="metaCalorias">Máximo Kcal/día</label>
-                <input type="number" id="metaCalorias" value="2000">
-            </div>
-            <div class="form-group">
-                <label for="metaPasos">Mínimo Pasos/día</label>
-                <input type="number" id="metaPasos" value="10000">
-            </div>
-        </div>
 
-        <hr style="border: 0; border-top: 1px solid #eaeded; margin: 20px 0;">
-
-        <h2 id="formTitulo">Registrar Día de Hoy</h2>
-        <form id="registroForm">
-            <input type="hidden" id="editIndex" value="-1">
-            <div class="form-row">
-                <div class="form-group" style="flex: 0.8;">
-                    <label for="fecha">Fecha</label>
-                    <input type="text" id="fecha" placeholder="Ej: 29/6" required>
-                </div>
-                <div class="form-group">
-                    <label for="calorias">Calorías (kcal)</label>
-                    <input type="number" id="calorias" placeholder="Ej: 1950" required min="0">
-                </div>
-            </div>
+    <div id="vistaMauri" style="display: none;">
+        <div class="card">
+            <h1>Mi Progreso de Verano</h1>
+            <p class="subtitle">Control diario de salud y energía</p>
+            
+            <h2>Definir Mis Metas Diarias</h2>
             <div class="form-row">
                 <div class="form-group">
-                    <label for="pasos">Pasos Totales</label>
-                    <input type="number" id="pasos" placeholder="Ej: 10500" required min="0">
+                    <label for="metaCalorias">Máximo Kcal/día</label>
+                    <input type="number" id="metaCalorias" value="2000">
                 </div>
                 <div class="form-group">
-                    <label for="gym">¿Gym?</label>
-                    <select id="gym">
-                        <option value="Sí">Sí 💪</option>
-                        <option value="No">No 🛌</option>
-                    </select>
+                    <label for="metaPasos">Mínimo Pasos/día</label>
+                    <input type="number" id="metaPasos" value="10000">
                 </div>
             </div>
-            <button type="submit" id="btnEnviar">Guardar Registro</button>
-            <button type="button" id="btnCancelarEdicion" class="btn-danger" style="display:none; margin-top:10px;">Cancelar Edición</button>
-        </form>
-        <div id="mensajeExito" class="mensaje" style="color: #27ae60;">¡Cambios guardados con éxito!</div>
-    </div>
 
-    <div class="card">
-        <h2>Resumen Acumulado</h2>
-        <div class="stats-grid">
-            <div class="stat-box">
-                <span class="num" id="statDias">0</span>
-                <span class="lbl">Días Registrados</span>
+            <hr style="border: 0; border-top: 1px solid #eaeded; margin: 20px 0;">
+
+            <h2 id="formTitulo">Registrar Día de Hoy</h2>
+            <form id="registroForm">
+                <input type="hidden" id="editIndex" value="-1">
+                <div class="form-row">
+                    <div class="form-group" style="flex: 0.8;">
+                        <label for="fecha">Fecha</label>
+                        <input type="text" id="fecha" placeholder="Ej: 29/6" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="calorias">Calorías (kcal)</label>
+                        <input type="number" id="calorias" placeholder="Ej: 1950" required min="0">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="pasos">Pasos Totales</label>
+                        <input type="number" id="pasos" placeholder="Ej: 10500" required min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="gym">¿Gym?</label>
+                        <select id="gym">
+                            <option value="Sí">Sí 💪</option>
+                            <option value="No">No 🛌</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" id="btnEnviar">Guardar Registro</button>
+                <button type="button" id="btnCancelarEdicion" class="btn-danger" style="display:none; margin-top:10px;">Cancelar Edición</button>
+            </form>
+            <div id="mensajeExito" class="mensaje" style="color: #27ae60;">¡Cambios guardados con éxito!</div>
+        </div>
+
+        <div class="card">
+            <h2>Resumen Acumulado</h2>
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <span class="num" id="statDias">0</span>
+                    <span class="lbl">Días Registrados</span>
+                </div>
+                <div class="stat-box">
+                    <span class="num" id="statCalorias">0</span>
+                    <span class="lbl">Media kcal</span>
+                </div>
+                <div class="stat-box">
+                    <span class="num" id="statPasos">0</span>
+                    <span class="lbl">Media Pasos</span>
+                </div>
+                <div class="stat-box">
+                    <span class="num" id="statGym">0</span>
+                    <span class="lbl">Días de Gym</span>
+                </div>
+                <div class="clearfix"></div>
             </div>
-            <div class="stat-box">
-                <span class="num" id="statCalorias">0</span>
-                <span class="lbl">Media kcal</span>
+        </div>
+
+        <div class="card" style="padding-bottom: 15px;">
+            <h2>Historial (Rojo = No Cumplido | Verde = Cumplida)</h2>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Kcal</th>
+                            <th>Pasos</th>
+                            <th>Gym</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaHistorial"></tbody>
+                </table>
+                <div id="sinDatos" class="no-data">Aún no hay registros guardados.</div>
             </div>
-            <div class="stat-box">
-                <span class="num" id="statPasos">0</span>
-                <span class="lbl">Media Pasos</span>
-            </div>
-            <div class="stat-box">
-                <span class="num" id="statGym">0</span>
-                <span class="lbl">Días de Gym</span>
-            </div>
-            <div class="clearfix"></div>
+            <button id="btnReiniciar" class="btn-danger">Reiniciar Historial de la Web</button>
         </div>
     </div>
 
-    <div class="card" style="padding-bottom: 15px;">
-        <h2>Historial (Rojo = Meta No Cumplida | Verde = Cumplida)</h2>
-        <div class="table-wrapper">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Fecha</th>
-                        <th>Kcal</th>
-                        <th>Pasos</th>
-                        <th>Gym</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody id="tablaHistorial"></tbody>
-            </table>
-            <div id="sinDatos" class="no-data">Aún no hay registros guardados.</div>
+
+    <div id="vistaYuli" style="display: none;">
+        <div class="card" style="border-top: 5px solid #3498db;">
+            <h1 style="color: #2980b9;">Mi Planificador Financiero</h1>
+            <p class="subtitle">Distribución inteligente de presupuestos</p>
+            
+            <h2 class="h2-finanzas">Dinero Disponible</h2>
+            <div class="form-group">
+                <label for="dineroTotal">Introduce la cantidad de dinero actual (€)</label>
+                <input type="number" id="dineroTotal" placeholder="Ej: 1500" min="0" value="0">
+            </div>
+            <button id="btnCalcularFinanzas" style="background-color: #3498db;">Calcular Distribución</button>
         </div>
-        <button id="btnReiniciar" class="btn-danger">Reiniciar Historial de la Web</button>
+
+        <div class="card" id="resultadosFinanzas" style="display: none;">
+            <h2 class="h2-finanzas">Tu Distribución Sugerida (30% - 30% - 40%)</h2>
+            <div class="finanzas-grid">
+                <div class="finanzas-box personal">
+                    <div>
+                        <strong>Para Mí (30%)</strong>
+                        <div style="font-size: 11px; color: #7f8c8d; margin-top:2px;">Gastos tuyos, caprichos o ahorro personal.</div>
+                    </div>
+                    <span class="monto" id="montoPersonal">0.00 €</span>
+                </div>
+                <div class="finanzas-box casa">
+                    <div>
+                        <strong>Para Casa (30%)</strong>
+                        <div style="font-size: 11px; color: #7f8c8d; margin-top:2px;">Alquiler/hipoteca, comida, facturas o mejoras.</div>
+                    </div>
+                    <span class="monto" id="montoCasa">0.00 €</span>
+                </div>
+                <div class="finanzas-box coche">
+                    <div>
+                        <strong>Para el Coche (40%)</strong>
+                        <div style="font-size: 11px; color: #7f8c8d; margin-top:2px;">Gasolina, seguro, mantenimiento o fondo para averías.</div>
+                    </div>
+                    <span class="monto" id="montoCoche">0.00 €</span>
+                </div>
+            </div>
+
+            <div class="consejo-box">
+                <strong>💡 Recomendación del Asistente:</strong><br>
+                Tu idea de darle un <strong>40% al coche</strong> es súper madura y un gran acierto. Los vehículos suelen generar gastos imprevistos muy altos (revisiones, ruedas, seguros o averías sorpresa). Al blindar ese 40%, te aseguras de tener un colchón de tranquilidad absoluto para moverte. El 30% para casa mantiene la estabilidad del hogar y el 30% personal te da total libertad para disfrutar el verano sin culpa.
+            </div>
+        </div>
     </div>
+
 </div>
 
 <script>
-    // --- CONTROL DE SEGURIDAD (CONTRASEÑA) ---
-    const CONTRASEÑA_CORRECTA = "Mauri123";
+    // --- CONTROL DE SEGURIDAD INTEGRADO ---
+    let loginCorrecto = false;
+    let usuarioActivo = "";
 
-    let intento = prompt("Introduce la contraseña para acceder:");
-    if (intento !== CONTRASEÑA_CORRECTA) {
-        document.body.innerHTML = "<h1 style='text-align:center; margin-top:50px; color:#e74c3c; font-family:sans-serif;'>Acceso denegado</h1>";
-        throw new Error("Contraseña incorrecta");
+    while (!loginCorrecto) {
+        let intento = prompt("Introduce tu contraseña de acceso:");
+        
+        if (intento === "Mauri123") {
+            loginCorrecto = true;
+            usuarioActivo = "mauri";
+            document.getElementById('vistaMauri').style.display = 'block';
+        } else if (intento === "Yuli123") {
+            loginCorrecto = true;
+            usuarioActivo = "yuli";
+            document.getElementById('vistaYuli').style.display = 'block';
+            
+            // Cargar dinero si ya estaba guardado en el navegador de Yuli
+            const dineroGuardado = localStorage.getItem('dineroYuli');
+            if(dineroGuardado) {
+                document.getElementById('dineroTotal').value = dineroGuardado;
+                calcularRepartoFinanciero(Number(dineroGuardado));
+            }
+        } else {
+            alert("Contraseña incorrecta. Inténtalo de nuevo.");
+        }
     }
 
-    // --- ENLACE CON GOOGLE SHEETS ---
+    // --- ENLACE CON GOOGLE SHEETS (Para la sección de Mauri) ---
     const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzmK5KJ6Z1CSPUpCyjqra_yRqPy-XORad5VVVAoczJnnOo7w0YCRssfzKfMXuT_s7VJyQ/exec";
-
-    // Cargar historial y metas locales
     let historial = JSON.parse(localStorage.getItem('historialDieta')) || [];
     
-    // Auto rellenar fecha de hoy de forma cómoda
     function ponerFechaDeHoy() {
-        if(document.getElementById('editIndex').value === "-1") {
+        if(document.getElementById('editIndex').value === "-1" && document.getElementById('fecha')) {
             const hoy = new Date();
             document.getElementById('fecha').value = hoy.getDate() + "/" + (hoy.getMonth() + 1);
         }
     }
 
-    // Escuchar cambios en las metas para volver a colorear la tabla al instante
-    document.getElementById('metaCalorias').addEventListener('input', actualizarInterfaz);
-    document.getElementById('metaPasos').addEventListener('input', actualizarInterfaz);
+    if(usuarioActivo === "mauri") {
+        document.getElementById('metaCalorias').addEventListener('input', actualizarInterfaz);
+        document.getElementById('metaPasos').addEventListener('input', actualizarInterfaz);
+    }
 
     function actualizarInterfaz() {
+        if(usuarioActivo !== "mauri") return;
         const tbody = document.getElementById('tablaHistorial');
         const sinDatos = document.getElementById('sinDatos');
         
@@ -219,8 +290,6 @@
 
         historial.forEach((dia, index) => {
             const row = document.createElement('tr');
-            
-            // Lógica de colores condicionales basados en las metas
             const kcalClase = Number(dia.calorias) <= mKcal ? 'bien' : 'mal'; 
             const pasosClase = Number(dia.pasos) >= mPasos ? 'bien' : 'mal';
             const gymClase = dia.gym === 'Sí' ? 'bien' : 'mal';
@@ -235,7 +304,6 @@
                     <button class="btn-mini btn-del" onclick="borrarDia(${index})">🗑️</button>
                 </td>
             `;
-            // Insertar arriba los más recientes
             tbody.insertBefore(row, tbody.firstChild);
 
             totalCalorias += Number(dia.calorias);
@@ -250,107 +318,120 @@
         document.getElementById('statGym').innerText = totalGym;
     }
 
-    // Guardar o Actualizar Datos
-    document.getElementById('registroForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const btn = document.getElementById('btnEnviar');
-        const mensaje = document.getElementById('mensajeExito');
-        const editIndex = parseInt(document.getElementById('editIndex').value);
-        
-        btn.disabled = true;
-        btn.innerText = "Guardando...";
+    if(usuarioActivo === "mauri") {
+        document.getElementById('registroForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btnEnviar');
+            const mensaje = document.getElementById('mensajeExito');
+            const editIndex = parseInt(document.getElementById('editIndex').value);
+            btn.disabled = true;
+            btn.innerText = "Guardando...";
 
-        const nuevosDatos = {
-            fecha: document.getElementById('fecha').value,
-            calorias: document.getElementById('calorias').value,
-            pasos: document.getElementById('pasos').value,
-            gym: document.getElementById('gym').value
+            const nuevosDatos = {
+                fecha: document.getElementById('fecha').value,
+                calorias: document.getElementById('calorias').value,
+                pasos: document.getElementById('pasos').value,
+                gym: document.getElementById('gym').value
+            };
+
+            fetch(WEB_APP_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(nuevosDatos)
+            })
+            .then(() => {
+                if (editIndex === -1) {
+                    historial.push(nuevosDatos);
+                } else {
+                    historial[editIndex] = nuevosDatos;
+                    document.getElementById('editIndex').value = "-1";
+                    document.getElementById('formTitulo').innerText = "Registrar Día de Hoy";
+                    document.getElementById('btnCancelarEdicion').style.display = "none";
+                }
+                localStorage.setItem('historialDieta', JSON.stringify(historial));
+                actualizarInterfaz();
+                mensaje.style.display = "block";
+                document.getElementById('registroForm').reset();
+                ponerFechaDeHoy();
+                btn.disabled = false;
+                btn.innerText = "Guardar Registro";
+                setTimeout(() => { mensaje.style.display = "none"; }, 4000);
+            })
+            .catch(error => {
+                alert('Error al conectar con Google.');
+                btn.disabled = false;
+                btn.innerText = "Guardar Registro";
+            });
+        });
+
+        window.editarDia = function(index) {
+            const dia = historial[index];
+            document.getElementById('editIndex').value = index;
+            document.getElementById('fecha').value = dia.fecha;
+            document.getElementById('calorias').value = dia.calorias;
+            document.getElementById('pasos').value = dia.pasos;
+            document.getElementById('gym').value = dia.gym;
+            document.getElementById('formTitulo').innerText = "Editando el día: " + dia.fecha;
+            document.getElementById('btnCancelarEdicion').style.display = "block";
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         };
 
-        // Enviar a Google Sheets
-        fetch(WEB_APP_URL, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(nuevosDatos)
-        })
-        .then(() => {
-            if (editIndex === -1) {
-                // Modo Añadir nuevo día
-                historial.push(nuevosDatos);
-            } else {
-                // Modo Editar día existente
-                historial[editIndex] = nuevosDatos;
-                document.getElementById('editIndex').value = "-1";
-                document.getElementById('formTitulo').innerText = "Registrar Día de Hoy";
-                document.getElementById('btnCancelarEdicion').style.display = "none";
-            }
-
-            localStorage.setItem('historialDieta', JSON.stringify(historial));
-            actualizarInterfaz();
-
-            mensaje.style.display = "block";
+        document.getElementById('btnCancelarEdicion').addEventListener('click', function() {
+            document.getElementById('editIndex').value = "-1";
+            document.getElementById('formTitulo').innerText = "Registrar Día de Hoy";
             document.getElementById('registroForm').reset();
             ponerFechaDeHoy();
-            btn.disabled = false;
-            btn.innerText = "Guardar Registro";
-            
-            setTimeout(() => { mensaje.style.display = "none"; }, 4000);
-        })
-        .catch(error => {
-            alert('Hubo un problema al conectar con Google Sheets.');
-            console.error(error);
-            btn.disabled = false;
-            btn.innerText = "Guardar Registro";
+            this.style.display = "none";
         });
-    });
 
-    // Función para activar la edición de una fila
-    window.editarDia = function(index) {
-        const dia = historial[index];
-        document.getElementById('editIndex').value = index;
-        document.getElementById('fecha').value = dia.fecha;
-        document.getElementById('calorias').value = dia.calorias;
-        document.getElementById('pasos').value = dia.pasos;
-        document.getElementById('gym').value = dia.gym;
-        
-        document.getElementById('formTitulo').innerText = "Editando el día: " + dia.fecha;
-        document.getElementById('btnCancelarEdicion').style.display = "block";
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    };
+        window.borrarDia = function(index) {
+            if(confirm("¿Eliminar este día de la pantalla?")) {
+                historial.splice(index, 1);
+                localStorage.setItem('historialDieta', JSON.stringify(historial));
+                actualizarInterfaz();
+            }
+        };
 
-    // Cancelar la edición actual
-    document.getElementById('btnCancelarEdicion').addEventListener('click', function() {
-        document.getElementById('editIndex').value = "-1";
-        document.getElementById('formTitulo').innerText = "Registrar Día de Hoy";
-        document.getElementById('registroForm').reset();
+        document.getElementById('btnReiniciar').addEventListener('click', function() {
+            if (confirm("¿Borrar por completo el historial de esta pantalla?")) {
+                localStorage.removeItem('historialDieta');
+                historial = [];
+                actualizarInterfaz();
+                ponerFechaDeHoy();
+            }
+        });
+
+        actualizarInterfaz();
         ponerFechaDeHoy();
-        this.style.display = "none";
-    });
+    }
 
-    // Función para borrar un día específico de la pantalla
-    window.borrarDia = function(index) {
-        if(confirm("¿Quieres eliminar este día de tu historial de pantalla?")) {
-            historial.splice(index, 1);
-            localStorage.setItem('historialDieta', JSON.stringify(historial));
-            actualizarInterfaz();
+    // --- LÓGICA DE FINANZAS DE YULI ---
+    if(usuarioActivo === "yuli") {
+        function calcularRepartoFinanciero(total) {
+            if (isNaN(total) || total < 0) total = 0;
+            
+            // Cálculos matemáticos de los porcentajes
+            const personal = total * 0.30;
+            const casa = total * 0.30;
+            const coche = total * 0.40;
+
+            // Inyectar en las etiquetas visuales fijando 2 decimales
+            document.getElementById('montoPersonal').innerText = personal.toFixed(2) + " €";
+            document.getElementById('montoCasa').innerText = casa.toFixed(2) + " €";
+            document.getElementById('montoCoche').innerText = coche.toFixed(2) + " €";
+
+            // Mostrar la tarjeta de resultados
+            document.getElementById('resultadosFinanzas').style.display = "block";
         }
-    };
 
-    // Reiniciar todo
-    document.getElementById('btnReiniciar').addEventListener('click', function() {
-        if (confirm("¿Borrar por completo el historial de esta pantalla?")) {
-            localStorage.removeItem('historialDieta');
-            historial = [];
-            actualizarInterfaz();
-            ponerFechaDeHoy();
-        }
-    });
-
-    // Inicialización al cargar la página
-    actualizarInterfaz();
-    ponerFechaDeHoy();
+        document.getElementById('btnCalcularFinanzas').addEventListener('click', function() {
+            const total = Number(document.getElementById('dineroTotal').value);
+            // Almacenar en la memoria del dispositivo para que no se borre al refrescar
+            localStorage.setItem('dineroYuli', total);
+            calcularRepartoFinanciero(total);
+        });
+    }
 </script>
 
 </body>
