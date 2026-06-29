@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Registro de Hábitos</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        body { background-color: #f4f7f6; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+        .container { background-color: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 100%; max-width: 400px; }
+        h1 { text-align: center; color: #333; margin-bottom: 20px; font-size: 24px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; color: #666; font-weight: bold; }
+        input[type="number"], select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 16px; }
+        button { width: 100%; padding: 12px; background-color: #2ecc71; border: none; border-radius: 6px; color: white; font-size: 16px; font-weight: bold; cursor: pointer; transition: background 0.3s; }
+        button:hover { background-color: #27ae60; }
+        .mensaje { text-align: center; margin-top: 15px; font-weight: bold; display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Registro Diario</h1>
+    <form id="registroForm">
+        <div class="form-group">
+            <label for="calorias">Calorías consumidas (kcal)</label>
+            <input type="number" id="calorias" placeholder="Ej: 2000" required min="0">
+        </div>
+        <div class="form-group">
+            <label for="pasos">Pasos dados</label>
+            <input type="number" id="pasos" placeholder="Ej: 10000" required min="0">
+        </div>
+        <div class="form-group">
+            <label for="gym">¿Has ido al Gym?</label>
+            <select id="gym">
+                <option value="Sí">Sí</option>
+                <option value="No">No</option>
+            </select>
+        </div>
+        <button type="submit" id="btnEnviar">Guardar Día</button>
+    </form>
+    <div id="mensajeExito" class="mensaje" style="color: #27ae60;">¡Datos guardados correctamente!</div>
+</div>
+
+<script>
+    // --- AQUÍ ESTÁ EL BLOQUE DE LA CONTRASEÑA ---
+    const CONTRASEÑA_CORRECTA = "Mauri123"; // <- Cambia esto por tu contraseña personal
+
+    let intento = prompt("Introduce la contraseña para acceder:");
+    if (intento !== CONTRASEÑA_CORRECTA) {
+        document.body.innerHTML = "<h1 style='text-align:center; margin-top:50px; color:red; font-family:sans-serif;'>Acceso denegado</h1>";
+        throw new Error("Contraseña incorrecta"); // Detiene la ejecución del resto del código
+    }
+    // --------------------------------------------
+
+    // REEMPLAZA ESTA URL por la que te dio Google Apps Script al implementar
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzmK5KJ6Z1CSPUpCyjqra_yRqPy-XORad5VVVAoczJnnOo7w0YCRssfzKfMXuT_s7VJyQ/exec";
+
+    document.getElementById('registroForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const btn = document.getElementById('btnEnviar');
+        const mensaje = document.getElementById('mensajeExito');
+        
+        btn.disabled = true;
+        btn.innerText = "Guardando...";
+
+        const datos = {
+            calorias: document.getElementById('calorias').value,
+            pasos: document.getElementById('pasos').value,
+            gym: document.getElementById('gym').value
+        };
+
+        fetch(WEB_APP_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(datos)
+        })
+        .then(() => {
+            mensaje.style.display = "block";
+            document.getElementById('registroForm').reset();
+            btn.disabled = false;
+            btn.innerText = "Guardar Día";
+            
+            setTimeout(() => { mensaje.style.display = "none"; }, 3000);
+        })
+        .catch(error => {
+            alert('Hubo un error al guardar los datos.');
+            console.error(error);
+            btn.disabled = false;
+            btn.innerText = "Guardar Día";
+        });
+    });
+</script>
+
+</body>
+</html>
